@@ -9,7 +9,6 @@ import Community from "./pages/Community";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/Profile";
 
-
 function App() {
     return (
         <Router>
