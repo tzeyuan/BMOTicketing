@@ -51,6 +51,15 @@ const Home = () => {
         </div>
       </main>
 
+      {/* Right Sidebar */}
+      <aside className="sidebar right-sidebar">
+      <h2>May 2025</h2>
+        <ul>
+          <li>Event 1 - 8:00PM</li>
+          <li>Event 2 - 6:25PM</li>
+          <li><button className="more-button">More</button></li>
+        </ul>
+      </aside>
     </div>
   );
 };
