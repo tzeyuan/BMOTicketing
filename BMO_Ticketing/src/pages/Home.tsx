@@ -1,10 +1,18 @@
 import { Link } from "react-router-dom";
-       
+import "../css/Home.css";
+
+
 const Home = () => {
   return (
     <div className="home-container">
       {/* Left Sidebar */}
       <aside className="sidebar left-sidebar">
+
+        <div className="logo">
+             <img src="/Icon.png" alt="App Icon" className="logo-icon" />
+             <h2 className="logo-text">BMO Ticketing</h2>
+        </div>
+        
         <h2>Event Category</h2>
         <ul>
           <li>Sports</li>
