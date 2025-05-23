@@ -33,27 +33,30 @@ const Home = () => {
           <button>Search</button>
         </div>
 
-        <h2 className="section-title">Popular Events In Malaysia</h2>
+        <h2 className="section-title">Trending Events in Malaysia</h2>
 
         <div className="event-grid">
           <div className="event-card">
-            <img src="https://placehold.co/300x150" alt="Event 1" />
-            <h3>Zoo Negara Adoption Package</h3>
-            <p>From RM 25.00</p>
+            <img src="/event1.png" alt="Event 1" />
+            <h3>aespa SYNK: Parallel Line</h3>
+            <h3>aespa</h3>
+            <p>From RM 257.00</p>
             <button>Buy Now</button>
           </div>
 
           <div className="event-card">
-            <img src="https://placehold.co/300x150" alt="Event 2" />
-            <h3>Persatuan Ortopedik Sandakan</h3>
-            <p>From RM 49.00</p>
-            <button>Buy Now</button>
-          </div>
-
-          <div className="event-card">
-            <img src="https://placehold.co/300x150" alt="Event 3" />
-            <h3>EMPAT LIVE IN KUALA LUMPUR</h3>
+            <img src="/event2.png" alt="Event 2" />
+            <h3>Final Lap : JJ20 Kuala Lumpur</h3>
+            <h3>JJ Lin</h3>
             <p>From RM 288.00</p>
+            <button>Buy Now</button>
+          </div>
+
+          <div className="event-card">
+            <img src="/event3.png" alt="Event 3" />
+            <h3>KISS ROAD in Malaysia</h3>
+            <h3>Kiss of Life</h3>
+            <p>From RM 33 8.00</p>
             <button>Buy Now</button>
           </div>
         </div>

@@ -39,7 +39,7 @@
 .left-sidebar li,
 .right-sidebar li {
   margin: 10px 0;
-  color: #6b21a8;
+  color: #63bda4;
   font-size: 14px;
 }
 
@@ -63,7 +63,7 @@
 }
 
 .search-bar button {
-  background-color: #6b21a8;
+  background-color: #63bda4;
   color: white;
   padding: 8px 16px;
   border: none;
@@ -73,7 +73,7 @@
 }
 
 .section-title {
-  color: #6b21a8;
+  color: #63bda4;
   margin-bottom: 16px;
 }
 
@@ -109,7 +109,7 @@
 
 .event-card button {
   margin-top: 8px;
-  background-color: #6b21a8;
+  background-color: #63bda4;
   color: white;
   border: none;
   padding: 6px 12px;
@@ -120,7 +120,7 @@
 .more-button {
   margin-top: 10px;
   background: none;
-  color: #6b21a8;
+  color: #63bda4;
   border: none;
   text-decoration: underline;
   cursor: pointer;
