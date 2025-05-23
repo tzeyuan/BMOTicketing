@@ -56,7 +56,7 @@ const Home = () => {
             <img src="/event3.png" alt="Event 3" />
             <h3>KISS ROAD in Malaysia</h3>
             <h3>Kiss of Life</h3>
-            <p>From RM 33 8.00</p>
+            <p>From RM 338.00</p>
             <button>Buy Now</button>
           </div>
         </div>
