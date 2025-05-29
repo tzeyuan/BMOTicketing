@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./pages/Navbar";
-import Footer from "./pages/Footer";
+import Layout from "./pages/Layout";
 
 import Home from "./pages/Home";
 import Login from "./pages/Login";
@@ -17,20 +16,20 @@ import Payment from "./pages/Payment";
 function App() {
     return (
         <Router>
-            <Navbar />
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<Signup />} />
-                <Route path="/events" element={<Event />} />
-                <Route path="/ticket/:id" element={<TicketDetails />} />
-                <Route path="/merchandise" element={<Merchandise />} />
-                <Route path="/community" element={<Community />} />
-                <Route path="/about" element={<AboutUs />} />
-                <Route path="/profile" element={<Profile />} />
-                <Route path="/profile" element={<Payment />} />
-            </Routes>
-            <Footer />
+            <Layout>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<Signup />} />
+                    <Route path="/events" element={<Event />} />
+                    <Route path="/ticket/:id" element={<TicketDetails />} />
+                    <Route path="/merchandise" element={<Merchandise />} />
+                    <Route path="/community" element={<Community />} />
+                    <Route path="/about" element={<AboutUs />} />
+                    <Route path="/profile" element={<Profile />} />
+                    <Route path="/profile" element={<Payment />} />
+                </Routes>
+            </Layout>
         </Router>
     );
 }
