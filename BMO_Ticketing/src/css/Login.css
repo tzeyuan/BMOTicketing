@@ -1,5 +1,119 @@
-.login-container {
+.login-page {
+  background: linear-gradient(135deg, #c7f1e5, #4ad7af);
+  height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.login-box {
+  background-color: white;
+  padding: 32px;
+  border-radius: 8px;
+  width: 360px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.login-box h2 {
+  margin-bottom: 20px;
+  text-align: left;
+  color: #2c2c2c;
+}
+
+.login-box label {
+  display: block;
+  margin-top: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #333;
+}
+
+.login-box input[type="email"],
+.login-box input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-top: 4px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.password-note {
+  font-size: 12px;
+  color: #777;
+  margin-top: 4px;
+}
+
+.login-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 14px;
+}
+
+.login-options a {
+  color: #63bda4;
+  text-decoration: none;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: #63bda4;
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  margin-top: 16px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #63bda4;
+}
+
+.divider {
+  text-align: center;
+  font-size: 12px;
+  margin: 20px 0 10px;
+  color: #666;
+}
+
+.social-login {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.facebook-btn,
+.google-btn {
+  flex: 1;
+  padding: 10px;
+  font-weight: bold;
+  border: none;
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.facebook-btn {
+  background-color: #3b5998;
+}
+
+.google-btn {
+  background-color: #db4437;
+}
+
+.signup-prompt {
+  margin-top: 20px;
+  font-size: 14px;
+  text-align: center;
+}
+
+.signup-prompt a {
+  color: #63bda4;
+  text-decoration: none;
+  font-weight: bold;
 }

@@ -1,54 +1,68 @@
 import "../css/Login.css";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
+  const [remember, setRemember] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Still need to change the email after this.
-    if (email === "admin123@gmail.com" && password === "123456") {
-      alert("Login successful!");
-      navigate("/profile"); // redirect after login
-    } else {
-      alert("Invalid account.");
-    }
+    alert("Login attempt with: " + email);
   };
 
   return (
-    <div className="login-container">
-      <form className="login-form" onSubmit={handleSubmit}>
-        <h2>Login to BMO Ticketing</h2>
+    <div className="login-page">
+        <div className="login-box">
+            <h2>LOG IN</h2>
 
-        <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          id="email"
-          placeholder="example@email.com"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
+            <form onSubmit={handleSubmit}>
+                <label>Email or Username</label>
+                <input
+                    type="email"
+                    placeholder="Username / Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                />
 
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="••••••••"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+                <label>Password</label>
+                <input
+                type="password"
+                placeholder="••••••••"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                />
+                
 
-        <button type="submit">Login</button>
-        <p className="signup-link">
-          Don't have an account? <a href="/signup">Sign Up</a>
-        </p>
-      </form>
+                <div className="login-options">
+                    <label>
+                        <input
+                            type="checkbox"
+                            checked={remember}
+                            onChange={() => setRemember(!remember)}
+                        />
+                        Remember me
+                    </label>
+                    <a href="#">Forgot password?</a>
+                </div>
+
+                <button className="login-btn" type="submit">Login</button>
+            </form>
+            
+            <div className="divider">OR LOGIN WITH</div>
+            <div className="social-login">
+                <button className="facebook-btn">Facebook</button>
+                <button className="google-btn">Google</button>
+            </div>
+            <div className="signup-prompt">
+                <span>New user? </span>
+                <a href="/signup">Sign Up now!</a>
+            </div>
+
+      </div>
     </div>
   );
 };
