@@ -5,8 +5,10 @@ const Navbar = () => {
   return (
     <header className="navbar">
       <div className="navbar-left">
-        <img src="/Icon.png" alt="Logo" className="navbar-logo" />
-        <h1 className="navbar-title">BMO Ticketing</h1>
+        <Link to="/" className="navbar-brand">
+          <img src="/Icon.png" alt="Logo" className="navbar-logo" />
+          <h1 className="navbar-title">BMO Ticketing</h1>
+        </Link>
       </div>
 
       <nav className="navbar-links">
