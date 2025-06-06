@@ -31,29 +31,29 @@ const Home = () => {
         <h2 className="section-title">Trending Events in Malaysia</h2>
 
         <div className="event-grid">
-          <div className="event-card">
+          <Link to="/ticket/1" className="event-card">
             <img src="/event1.png" alt="Event 1" />
             <h3>aespa SYNK: Parallel Line</h3>
             <h3>aespa</h3>
             <p>From RM 257.00</p>
             <button>Buy Now</button>
-          </div>
+          </Link>
 
-          <div className="event-card">
+          <Link to="/ticket/2" className="event-card">
             <img src="/event2.png" alt="Event 2" />
             <h3>Final Lap : JJ20 Kuala Lumpur</h3>
             <h3>JJ Lin</h3>
             <p>From RM 288.00</p>
             <button>Buy Now</button>
-          </div>
+          </Link>
 
-          <div className="event-card">
+          <Link to="/ticket/3" className="event-card">
             <img src="/event3.png" alt="Event 3" />
             <h3>KISS ROAD in Malaysia</h3>
             <h3>Kiss of Life</h3>
             <p>From RM 338.00</p>
             <button>Buy Now</button>
-          </div>
+          </Link>
         </div>
       </main>
 
