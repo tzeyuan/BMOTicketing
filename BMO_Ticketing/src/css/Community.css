@@ -1,0 +1,70 @@
+.community-page {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+}
+
+.community-page h2 {
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center;
+}
+
+.search-bar {
+  width: 100%;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-bottom: 24px;
+  font-size: 14px;
+}
+
+.group-list {
+  margin-bottom: 30px;
+}
+
+.group-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-bottom: 10px;
+  background-color: #f9f9f9;
+}
+
+.join-btn {
+  background-color: #63bda4;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.create-group input {
+  padding: 10px;
+  width: 70%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+.create-btn {
+  padding: 10px 16px;
+  background-color: #6b21a8;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.private-chat-placeholder {
+  margin-top: 40px;
+  padding: 20px;
+  background-color: #f3f3f3;
+  border-radius: 8px;
+  text-align: center;
+}

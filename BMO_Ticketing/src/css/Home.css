@@ -90,7 +90,7 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   text-align: center;
   text-decoration: none;
-
+  color:#000302;
 }
 
 .event-card img {
@@ -128,4 +128,16 @@
   border: none;
   text-decoration: underline;
   cursor: pointer;
+
+  .community-link {
+  display: inline-block;
+  margin-top: 10px;
+  color: #6b21a8;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.community-link:hover {
+  text-decoration: underline;
+}
 }
