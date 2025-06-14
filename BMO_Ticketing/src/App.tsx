@@ -11,6 +11,7 @@ import Community from "./pages/Community";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
+import CommDiscussion from "./pages/CommDiscussion";
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/profile" element={<Payment />} />
+                    <Route path="/community/:id" element={<CommDiscussion />} />
                 </Routes>
             </Layout>
         </Router>

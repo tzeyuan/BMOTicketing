@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "../css/Community.css";
 
 const Community = () => {
@@ -7,7 +8,7 @@ const Community = () => {
   const [groups, setGroups] = useState([
     { id: 1, name: "aespa Fans Malaysia" },
     { id: 2, name: "JJ Lin KL Concert Group" },
-    { id: 3, name: "KISS Malaysia Supporters" },
+    { id: 3, name: "Kiss Of Life Malaysia Supporters" },
   ]);
 
   const handleCreateGroup = (e: React.FormEvent) => {
@@ -42,7 +43,7 @@ const Community = () => {
           filteredGroups.map((group) => (
             <div key={group.id} className="group-item">
               <span>{group.name}</span>
-              <button className="join-btn">Join</button>
+              <Link to={`/community/${group.id}`} className="join-btn">Join</Link>
             </div>
           ))
         ) : (

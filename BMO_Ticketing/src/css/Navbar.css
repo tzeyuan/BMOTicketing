@@ -6,23 +6,30 @@
   justify-content: space-between; /* Distribute logo left & right links */
   padding: 10px 24px;
   font-family: Arial, sans-serif;
+  flex-wrap: nowrap;       
+  overflow-x: auto;
 }
 
 .navbar-left {
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .navbar-logo {
   width: 40px;
   height: 40px;
   margin-right: 10px;
+  flex-shrink: 0;
 }
 
 .navbar-title {
   font-size: 20px;
   font-weight: bold;
   color: white;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .navbar-brand {
@@ -33,9 +40,11 @@
 }
 
 .navbar-links {
-  margin-left: auto; /* Push this block to the right */
+  margin-left: auto; 
   display: flex;
   gap: 20px;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .navbar-links a {
@@ -52,6 +61,7 @@
   margin-left: 20px;
   display: flex;
   gap: 10px;
+  flex-shrink: 0;
 }
 
 .navbar-auth a {
@@ -60,6 +70,7 @@
   font-size: 14px;
   border-radius: 4px;
   transition: background 0.2s ease;
+  white-space: nowrap;
 }
 
 .login-btn {
