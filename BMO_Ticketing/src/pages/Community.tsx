@@ -38,7 +38,7 @@ const Community = () => {
 
       {/* Group list */}
       <div className="group-list">
-        <h3>Available Groups</h3>
+        <h3>Available Community</h3>
         {filteredGroups.length > 0 ? (
           filteredGroups.map((group) => (
             <div key={group.id} className="group-item">
