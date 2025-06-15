@@ -1,27 +1,33 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Community.css";
+import Modal from "./GroupModal";
+
+
+const eventCategories = [
+    "Sports", "Entertainment", "Exhibitions", "Seminars", "Business", "Travel", "Others",
+];
 
 const Community = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [groupName, setGroupName] = useState("");
   const [groups, setGroups] = useState([
-    { id: 1, name: "aespa Fans Malaysia" },
-    { id: 2, name: "JJ Lin KL Concert Group" },
-    { id: 3, name: "Kiss Of Life Malaysia Supporters" },
+    { id: 1, name: "aespa Fans Malaysia", topic: "Entertainments", description: "Discuss everything aespa!"},
+    { id: 2, name: "JJ Lin KL Concert Group", topic: "Entertainments", description: "Fan Chant Discussion 2025" },
+    { id: 3, name: "Kiss Of Life Malaysia Supporters", topic: "Entertainments", description: "KIOF concert 2025."},
   ]);
-
-  const handleCreateGroup = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (groupName.trim()) {
-      setGroups([...groups, { id: groups.length + 1, name: groupName }]);
-      setGroupName("");
-    }
-  };
+  const [modalOpen, setModalOpen] = useState(false);
 
   const filteredGroups = groups.filter((group) =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleCreateGroup = (newGroup: { name: string; topic: string; description: string }) => {
+    const newEntry = {
+      id: groups.length + 1,
+      ...newGroup,
+    };
+    setGroups([...groups, newEntry]);
+  };
 
   return (
     <div className="community-page">
@@ -42,35 +48,29 @@ const Community = () => {
         {filteredGroups.length > 0 ? (
           filteredGroups.map((group) => (
             <div key={group.id} className="group-item">
-              <span>{group.name}</span>
-              <Link to={`/community/${group.id}`} className="join-btn">Join</Link>
+              <div>
+                <strong>{group.name}</strong>
+                <p>{group.description}</p>
+                <small>Topic: {group.topic}</small>
+              </div>
+              <a href={`/community/${group.id}`} className="join-btn">Join</a>
             </div>
           ))
-        ) : (
-          <p>No groups found.</p>
-        )}
+        ) : (<p>No groups found.</p>)}
       </div>
 
       {/* Create new group */}
       <div className="create-group">
-        <h3>Create New Group</h3>
-        <form onSubmit={handleCreateGroup}>
-          <input
-            type="text"
-            placeholder="Enter group name"
-            value={groupName}
-            onChange={(e) => setGroupName(e.target.value)}
-            required
-          />
-          <button type="submit" className="create-btn">Create Group</button>
-        </form>
+        <button className="create-btn" onClick={() => setModalOpen(true)}>+ Create Group</button>
       </div>
 
-      {/* Private chat section (placeholder) */}
-      <div className="private-chat-placeholder">
-        <h3>Private Chat (Coming Soon)</h3>
-        <p>Send direct messages to other users privately.</p>
-      </div>
+      {modalOpen && (
+        <Modal
+          categories={eventCategories}
+          onClose={() => setModalOpen(false)}
+          onCreate={handleCreateGroup}
+        />
+      )}  
     </div>
   );
 };
