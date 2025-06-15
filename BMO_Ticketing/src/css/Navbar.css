@@ -59,6 +59,7 @@
 
 .navbar-auth {
   margin-left: 20px;
+  margin-bottom: 20px;
   display: flex;
   gap: 10px;
   flex-shrink: 0;
