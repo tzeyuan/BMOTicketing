@@ -1,7 +1,19 @@
 import { useParams } from "react-router-dom";
+import { useState } from "react";
 import "../css/TicketDetails.css";
 
-const eventData: Record<string, { title: string; artist: string; price: string; venue: string; date: string; image: string }> = {
+const eventData: Record<
+  string, 
+  { title: string; 
+    artist: string; 
+    price: string; 
+    venue: string; 
+    date: string; 
+    image: string;
+    description: string;
+    ticketTypes: string[];
+  }> = {
+
   "1": {
     title: "aespa SYNK: Parallel Line",
     artist: "aespa",
@@ -9,7 +21,11 @@ const eventData: Record<string, { title: string; artist: string; price: string; 
     venue: "Bukit Jalil National Stadium",
     date: "25/1/2026",
     image: "/event1.png",
+    description:
+      "Join aespa live in Malaysia for an electrifying night of K-pop performances, stunning visuals, and unforgettable moments with the MY community.",
+    ticketTypes: ["VIP RM 988", "CAT 1 RM 788", "CAT 2 RM 588", "CAT 3 RM257"],
   },
+
   "2": {
     title: "Final Lap : JJ20 Kuala Lumpur",
     artist: "JJ Lin",
@@ -17,7 +33,11 @@ const eventData: Record<string, { title: string; artist: string; price: string; 
     venue: "Bukit Jalil National Stadium",
     date: "12/12/2025",
     image: "/event2.png",
+    description:
+      "Experience JJ Lin's powerful vocals and emotional ballads in this once-in-a-lifetime anniversary concert.",
+    ticketTypes: ["VIP RM 988", "CAT 1 RM 788", "CAT 2 RM 588", "CAT 3 RM288"],
   },
+
   "3": {
     title: "KISS ROAD in Malaysia",
     artist: "Kiss of Life",
@@ -25,6 +45,9 @@ const eventData: Record<string, { title: string; artist: string; price: string; 
     venue: "Mega Star Arena, Kuala Lumpur",
     date: "17/5/2026",
     image: "/event3.png",
+    description:
+      "Celebrate with Kiss of Life as they rock the stage with energy, charisma, and hits that fans love.",
+    ticketTypes: ["VIP RM 988", "CAT 1 RM 788", "CAT 2 RM 588", "CAT 3 RM288"],
   },
 };
 
