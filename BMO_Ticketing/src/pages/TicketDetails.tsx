@@ -54,6 +54,8 @@ const eventData: Record<
 const TicketDetails = () => {
   const { id } = useParams();
   const event = eventData[id ?? ""];
+  const [activeTab, setActiveTab] = useState("ticket");
+  const [selectedTicket, setSelectedTicket] = useState("");
 
   if (!event) {
     return <div className="ticket-details"><h2>Event not found</h2></div>;
@@ -61,14 +63,70 @@ const TicketDetails = () => {
 
   return (
     <div className="ticket-details">
-      <img src={event.image} alt={event.title} />
-      <div className="ticket-info">
-        <h2>{event.title}</h2>
-        <p><strong>Artist:</strong> {event.artist}</p>
-        <p><strong>Price:</strong> {event.price}</p>
-        <p><strong>Date:</strong> {event.date}</p>
-        <p><strong>Venue:</strong> {event.venue}</p>
-        <button className="buy-button">Select Seat</button>
+      <h2 className="event-title">{event.title}</h2>
+
+      <div className="tab-nav">
+        <button className={activeTab === "ticket" ? "active" : ""}
+        onClick={() => setActiveTab("ticket")}
+        >
+            🎟️Ticket
+        </button>
+        <button
+          className={activeTab === "details" ? "active" : ""}
+          onClick={() => setActiveTab("details")}
+        >
+          ℹ️ Details
+        </button>
+      </div>
+
+      {/* Tab */}
+      <div className= "tab-content">
+          {activeTab === "ticket" && (
+            <div className="tab-ticket">
+              <img src={event.image} alt={event.title} className="event-img" />
+              <div className="ticket-info">
+                <h2>{event.title}</h2>
+                <p><strong>Artist:</strong> {event.artist}</p>
+                <p><strong>Price:</strong> {event.price}</p>
+                <p><strong>Date:</strong> {event.date}</p>
+                <p><strong>Venue:</strong> {event.venue}</p>
+                <p><strong>Price From:</strong> {event.price}</p>
+
+                <label>Select Ticket Type:</label>
+                <select
+                  value={selectedTicket}
+                  onChange={(e) => setSelectedTicket(e.target.value)}
+                >
+                  <option value="">-- Choose Ticket --</option>
+                  {event.ticketTypes.map((type, index) => (
+                    <option key={index} value={type}>{type}</option>
+                  ))}
+                </select>
+
+                <button className="buy-button" disabled={!selectedTicket}>
+                  {selectedTicket ? `Buy ${selectedTicket}` : "Select Seat"}
+                </button>
+              </div>
+            </div>
+          )}
+
+          {activeTab === "details" && (
+          <div className="tab-details">
+            <h3>Event Description</h3>
+            <p>{event.description}</p>
+
+            <h3>Seating Plan</h3>
+            <img src="/bukitjalil_seatingplan.png" alt="Seating Plan" className="seating-plan" />
+
+            <h3>Terms & Conditions</h3>
+            <ul>
+              <li>No refund or exchange after purchase.</li>
+              <li>Admission is subject to venue rules and regulations.</li>
+              <li>Ticket holders must comply with all event safety measures.</li>
+            </ul>
+          </div>
+        )}
+
       </div>
     </div>
   );
