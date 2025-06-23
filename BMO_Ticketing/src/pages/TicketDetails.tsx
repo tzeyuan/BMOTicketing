@@ -69,13 +69,13 @@ const TicketDetails = () => {
         <button className={activeTab === "ticket" ? "active" : ""}
         onClick={() => setActiveTab("ticket")}
         >
-            🎟️Ticket
+            Ticket
         </button>
         <button
           className={activeTab === "details" ? "active" : ""}
           onClick={() => setActiveTab("details")}
         >
-          ℹ️ Details
+            Details
         </button>
       </div>
 
