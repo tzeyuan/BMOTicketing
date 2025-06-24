@@ -61,6 +61,13 @@
   background-color: #63bda4;
 }
 
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 8px;
+}
+
+
 .divider {
   text-align: center;
   font-size: 12px;

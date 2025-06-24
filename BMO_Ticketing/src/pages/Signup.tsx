@@ -11,13 +11,28 @@ const Signup = () => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  const validatePassword = (pwd: string) => {
+    const regex = /^(?=.*[A-Z]).{6,12}$/;
+    return regex.test(pwd);
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!agree) {
       alert("Please read and agree to the terms and conditions.");
       return;
     }
-    alert("Sign Up successful with email: " + email);
+    if (!validatePassword(password)) {
+      setError("Password must be 6-12 characters with at least one uppercase letter.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match.");
+      return;
+    }
+    alert("Sign Up successful with email: " + email + "Please Login again.");
+    navigate("/login");
   };
 
   return (
@@ -52,6 +67,17 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
+
+          <label>Confirm Password</label>
+          <input
+            type="password"
+            placeholder="Re-enter your password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            required
+          />
+
+          {error && <p className="error">{error}</p>}
 
           <div className="signup-options">
             <label>
