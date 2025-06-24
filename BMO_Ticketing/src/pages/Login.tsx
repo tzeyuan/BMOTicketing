@@ -18,7 +18,7 @@ const Login = () => {
             <h2>LOG IN</h2>
 
             <form onSubmit={handleSubmit}>
-                <label>Email or Username</label>
+                <label>Email</label>
                 <input
                     type="email"
                     placeholder="Username / Email"
