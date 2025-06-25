@@ -111,3 +111,10 @@
   text-decoration: none;
   font-weight: bold;
 }
+
+.error {
+  color: red;
+  font-size: 13px;
+  margin-top: 8px;
+}
+

@@ -16,10 +16,10 @@ const Signup = () => {
     return regex.test(pwd);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!agree) {
-      alert("Please read and agree to the terms and conditions.");
+      setError("Please read and agree to the terms and conditions.");
       return;
     }
     if (!validatePassword(password)) {
@@ -31,8 +31,24 @@ const Signup = () => {
       setError("Passwords do not match.");
       return;
     }
-    alert("Sign Up successful with email: " + email + "Please Login again.");
-    navigate("/login");
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Signup successful! Please log in.");
+        navigate("/login");
+      } else {
+        setError(data.message || "Signup failed.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    }
   };
 
   return (
