@@ -1,15 +1,35 @@
 import "../css/Login.css";
 import { useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert("Login attempt with: " + email);
+    setError("");
+
+    try {
+      const res = await fetch("http://localhost:5000/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password }),
+      });
+
+      const data = await res.json();
+      if (res.ok) {
+        alert("Login successful!");
+        navigate("/");
+      } else {
+        setError(data.message || "Login failed.");
+      }
+    } catch (err) {
+      setError("Network error. Please try again.");
+    }
   };
 
   return (
@@ -21,7 +41,7 @@ const Login = () => {
                 <label>Email</label>
                 <input
                     type="email"
-                    placeholder="Username / Email"
+                    placeholder="Email@gmail.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
@@ -35,7 +55,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 />
-                
+                {error && <p className="error">{error}</p>}
 
                 <div className="login-options">
                     <label>
@@ -61,7 +81,6 @@ const Login = () => {
                 <span>New user? </span>
                 <a href="/signup">Sign Up now!</a>
             </div>
-
       </div>
     </div>
   );
