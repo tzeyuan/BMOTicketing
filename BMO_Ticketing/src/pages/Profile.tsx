@@ -27,7 +27,7 @@ const Profile = () => {
     <div className="profile-page">
       <div className="profile-header">
         <img src="/default_profilepic.png" alt="Profile" className="profile-pic" />
-        <h2>Welcome, {username}</h2>
+        <h2>{username}</h2>
       </div>
 
       <div className="tickets-section">

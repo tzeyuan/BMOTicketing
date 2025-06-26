@@ -1,27 +1,10 @@
 import { Link } from "react-router-dom";
 import "../css/Navbar.css";
-import { useEffect, useState } from "react";
+import { useContext} from "react";
+import { AuthContext } from "../AuthContext";
 
 const Navbar = () => {
-  const [username, setUsername] = useState(localStorage.getItem("username"));
-
-  useEffect(() => {
-    const checkLogin = () => {
-      const storedUser = localStorage.getItem("username");
-      setUsername(storedUser);
-    };
-
-    // Listen to storage change (if other tabs change login)
-    window.addEventListener("storage", checkLogin);
-
-    // Poll every second for changes (in case login happens in same tab)
-    const interval = setInterval(checkLogin, 1000);
-
-    return () => {
-      window.removeEventListener("storage", checkLogin);
-      clearInterval(interval);
-    };
-  }, []);
+  const { username } = useContext(AuthContext);
 
   return (
     <nav className="navbar">
@@ -39,7 +22,7 @@ const Navbar = () => {
       
       {username ? (
           <Link to="/profile">
-            <img src="/profile-icon.png" alt="Profile" className="navbar-profile-icon" />
+            <img src="/default_profilepic.png" alt="Profile" className="navbar-profile-icon" />
           </Link>
         ) : (
           <div className="navbar-auth">
