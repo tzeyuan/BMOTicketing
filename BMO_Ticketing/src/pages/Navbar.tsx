@@ -1,8 +1,27 @@
 import { Link } from "react-router-dom";
 import "../css/Navbar.css";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-  const username = localStorage.getItem("username");
+  const [username, setUsername] = useState(localStorage.getItem("username"));
+
+  useEffect(() => {
+    const checkLogin = () => {
+      const storedUser = localStorage.getItem("username");
+      setUsername(storedUser);
+    };
+
+    // Listen to storage change (if other tabs change login)
+    window.addEventListener("storage", checkLogin);
+
+    // Poll every second for changes (in case login happens in same tab)
+    const interval = setInterval(checkLogin, 1000);
+
+    return () => {
+      window.removeEventListener("storage", checkLogin);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <nav className="navbar">
