@@ -61,7 +61,7 @@ const Community = () => {
 
   const handleCreateGroup = async (newGroup: { name: string; topic: string; description: string }) => {
     try {
-      const res = await fetch("/api/communities", {
+      const res = await fetch("http://localhost:5000/api/communities", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newGroup),
