@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import "../css/Community.css";
+import CommunitySidebar from "./CommunitySidebar";
 import Modal from "./GroupModal";
 
 
@@ -15,6 +15,7 @@ const Community = () => {
     { id: 2, name: "JJ Lin KL Concert Group", topic: "Entertainments", description: "Fan Chant Discussion 2025" },
     { id: 3, name: "Kiss Of Life Malaysia Supporters", topic: "Entertainments", description: "KIOF concert 2025."},
   ]);
+  const [joinedGroups, setJoinedGroups] = useState<number[]>([1, 2]);
   const [modalOpen, setModalOpen] = useState(false);
 
   const filteredGroups = groups.filter((group) =>
@@ -29,39 +30,53 @@ const Community = () => {
     setGroups([...groups, newEntry]);
   };
 
-  return (
-    <div className="community-page">
-      <h2>Community Discussions</h2>
+  const handleJoin = (groupId: number) => {
+    if (!joinedGroups.includes(groupId)) {
+      setJoinedGroups([...joinedGroups, groupId]);
+    }
+  };
 
-      {/* Search existing groups */}
-      <input
-        type="text"
-        placeholder="Search community groups..."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="search-bar"
+  return (
+    <div className="community-layout">
+      <CommunitySidebar 
+        joinedGroups={groups.filter(g => joinedGroups.includes(g.id))}
+        onCreateClick={() => setModalOpen(true)} 
       />
 
-      {/* Group list */}
-      <div className="group-list">
-        <h3>Available Communities</h3>
-        {filteredGroups.length > 0 ? (
-          filteredGroups.map((group) => (
-            <div key={group.id} className="group-item">
-              <div>
-                <strong>{group.name}</strong>
-                <p>{group.description}</p>
-                <small>Topic: {group.topic}</small>
-              </div>
-              <a href={`/community/${group.id}`} className="join-btn">Join</a>
-            </div>
-          ))
-        ) : (<p>No groups found.</p>)}
-      </div>
+      <div className="community-main-content">
+        <h2>Community Discussions</h2>
 
-      {/* Create new group */}
-      <div className="create-group">
-        <button className="create-btn" onClick={() => setModalOpen(true)}>+ Create Community</button>
+        {/* Search existing groups */}
+        <input
+          type="text"
+          placeholder="Search community groups..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="search-bar"
+        />
+
+        {/* Group list */}
+        <div className="group-list">
+          <h3>Available Communities</h3>
+          {filteredGroups.length > 0 ? (
+            filteredGroups.map((group) => (
+              <div key={group.id} className="group-item">
+                <div>
+                  <strong>{group.name}</strong>
+                  <p>{group.description}</p>
+                  <small>Topic: {group.topic}</small>
+                </div>
+                {joinedGroups.includes(group.id) ? (
+                  <span className="joined-text">Joined</span>
+                ) : (
+                  <button className="join-btn" onClick={() => handleJoin(group.id)}>
+                    Join
+                  </button>
+                )}
+              </div>
+            ))
+          ) : (<p>No groups found.</p>)}
+        </div>
       </div>
 
       {modalOpen && (
@@ -70,8 +85,8 @@ const Community = () => {
           onClose={() => setModalOpen(false)}
           onCreate={handleCreateGroup}
         />
-      )}  
-    </div>
+      )}
+  </div>
   );
 };
 

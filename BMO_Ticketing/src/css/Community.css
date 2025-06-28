@@ -12,6 +12,17 @@
   text-align: center;
 }
 
+.community-layout {
+  display: flex;
+  min-height: calc(100vh - 60px);
+}
+
+.community-main-content {
+  flex: 1;
+  padding: 20px;
+  margin-top: 60px; 
+}
+
 .search-bar {
   width: 100%;
   padding: 10px;
@@ -49,6 +60,17 @@
   text-decoration: none;
 }
 
+.joined-text {
+  padding: 6px 12px;
+  background-color: #ccc;
+  border-radius: 4px;
+  color: #333;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .create-group input {
   padding: 10px;
   width: 70%;
@@ -57,19 +79,12 @@
   margin-right: 10px;
 }
 
-.create-btn {
-  padding: 10px 16px;
-  background-color: #63bda4;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.private-chat-placeholder {
-  margin-top: 40px;
+.sidebar {
+  width: 220px;
+  background-color: #f7f7f7;
   padding: 20px;
-  background-color: #f3f3f3;
-  border-radius: 8px;
-  text-align: center;
-}
+  border-right: 1px solid #ddd;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+} 
