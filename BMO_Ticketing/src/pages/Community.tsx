@@ -1,6 +1,6 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import "../css/Community.css";
-import CommunitySidebar from "./CommunitySidebar";
 import Modal from "./GroupModal";
 
 
@@ -15,12 +15,8 @@ const Community = () => {
     { id: 2, name: "JJ Lin KL Concert Group", topic: "Entertainments", description: "Fan Chant Discussion 2025" },
     { id: 3, name: "Kiss Of Life Malaysia Supporters", topic: "Entertainments", description: "KIOF concert 2025."},
   ]);
-  const [joinedGroups, setJoinedGroups] = useState<number[]>([1, 2]);
+  const [joinedGroupIds, setJoinedGroupIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
-
-  const filteredGroups = groups.filter((group) =>
-    group.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const handleCreateGroup = (newGroup: { name: string; topic: string; description: string }) => {
     const newEntry = {
@@ -31,19 +27,42 @@ const Community = () => {
   };
 
   const handleJoin = (groupId: number) => {
-    if (!joinedGroups.includes(groupId)) {
-      setJoinedGroups([...joinedGroups, groupId]);
+    if (!joinedGroupIds.includes(groupId)) {
+      setJoinedGroupIds([...joinedGroupIds, groupId]);
     }
   };
 
-  return (
-    <div className="community-layout">
-      <CommunitySidebar 
-        joinedGroups={groups.filter(g => joinedGroups.includes(g.id))}
-        onCreateClick={() => setModalOpen(true)} 
-      />
+  const joinedGroups = groups.filter((group) => joinedGroupIds.includes(group.id));
+  const filteredGroups = groups.filter((group) =>
+    group.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
-      <div className="community-main-content">
+  return (
+    <div className="community-container">
+      <aside className="sidebar left-sidebar">
+
+        <ul>
+          <li>
+            <h3><Link to="/">Home</Link></h3>
+          </li>
+        </ul>
+
+        <h3>COMMUNITIES</h3>
+        <ul>
+          <li>
+            <button onClick={() => setModalOpen(true)} className="create-link">
+              ➕ Create a community
+            </button>
+          </li>
+          {joinedGroups.map((group) => (
+            <li key={group.id}>
+              <Link to={`/community/${group.id}`}>{group.name}</Link>
+            </li>
+          ))}
+        </ul>
+      </aside>
+
+      <main className="community-main">
         <h2>Community Discussions</h2>
 
         {/* Search existing groups */}
@@ -66,7 +85,7 @@ const Community = () => {
                   <p>{group.description}</p>
                   <small>Topic: {group.topic}</small>
                 </div>
-                {joinedGroups.includes(group.id) ? (
+                {joinedGroupIds.includes(group.id) ? (
                   <span className="joined-text">Joined</span>
                 ) : (
                   <button className="join-btn" onClick={() => handleJoin(group.id)}>
@@ -77,7 +96,7 @@ const Community = () => {
             ))
           ) : (<p>No groups found.</p>)}
         </div>
-      </div>
+      </main>
 
       {modalOpen && (
         <Modal

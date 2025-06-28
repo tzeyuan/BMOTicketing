@@ -1,26 +1,50 @@
-.community-page {
-  max-width: 800px;
-  margin: 30px auto;
-  padding: 20px;
-  background-color: #ffffff;
-  border-radius: 8px;
-}
-
-.community-page h2 {
-  margin-bottom: 20px;
-  color: #333;
-  text-align: center;
-}
-
-.community-layout {
+.community-container {
   display: flex;
-  min-height: calc(100vh - 60px);
+  min-height: 100vh;
+}
+.sidebar {
+  width: 220px;
+  background-color: #f7f7f7;
+  padding: 20px;
+  border-right: 1px solid #ccc;
 }
 
-.community-main-content {
+.sidebar h3 {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #555;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 10px;
+}
+
+.sidebar li {
+  margin-bottom: 10px;
+}
+
+.sidebar a, .create-link {
+  color: #63bda4;
+  text-decoration: none;
+  font-weight: 500;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  font-size: 14px;
+}
+
+.create-link:hover,
+.sidebar a:hover {
+  text-decoration: underline;
+}
+
+.community-main {
   flex: 1;
-  padding: 20px;
-  margin-top: 60px; 
+  padding: 30px;
+  background-color: #fff;
 }
 
 .search-bar {
@@ -39,6 +63,7 @@
 .group-item {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 10px 14px;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -70,21 +95,4 @@
   align-items: center;
   justify-content: center;
 }
-
-.create-group input {
-  padding: 10px;
-  width: 70%;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px;
-}
-
-.sidebar {
-  width: 220px;
-  background-color: #f7f7f7;
-  padding: 20px;
-  border-right: 1px solid #ddd;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-} 
+ 
