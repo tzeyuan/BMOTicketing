@@ -44,8 +44,9 @@
   cursor: pointer;
   display: inline-block;
   width: 50px; 
-  height: 20px;
+  height: 30px;
   text-align: center;
+  text-decoration: none;
 }
 
 .create-group input {
@@ -58,7 +59,7 @@
 
 .create-btn {
   padding: 10px 16px;
-  background-color: #6b21a8;
+  background-color: #63bda4;
   color: white;
   border: none;
   border-radius: 4px;

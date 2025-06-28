@@ -44,7 +44,7 @@ const Community = () => {
 
       {/* Group list */}
       <div className="group-list">
-        <h3>Available Community</h3>
+        <h3>Available Communities</h3>
         {filteredGroups.length > 0 ? (
           filteredGroups.map((group) => (
             <div key={group.id} className="group-item">
@@ -61,7 +61,7 @@ const Community = () => {
 
       {/* Create new group */}
       <div className="create-group">
-        <button className="create-btn" onClick={() => setModalOpen(true)}>+ Create Group</button>
+        <button className="create-btn" onClick={() => setModalOpen(true)}>+ Create Community</button>
       </div>
 
       {modalOpen && (
