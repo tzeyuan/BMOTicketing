@@ -63,7 +63,7 @@ const Home = () => {
         <ul>
           <li>Event 1 - 8:00PM</li>
           <li>Event 2 - 6:25PM</li>
-          <li><button className="more-button">More</button></li>
+          
           <li>
             <Link to="/community" className="community-link">Join Community</Link>
           </li>
