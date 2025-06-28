@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../css/Community.css";
 import Modal from "./GroupModal";
@@ -10,37 +10,79 @@ const eventCategories = [
 
 const Community = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [groups, setGroups] = useState([
-    { id: 1, name: "aespa Fans Malaysia", topic: "Entertainments", description: "Discuss everything aespa!"},
-    { id: 2, name: "JJ Lin KL Concert Group", topic: "Entertainments", description: "Fan Chant Discussion 2025" },
-    { id: 3, name: "Kiss Of Life Malaysia Supporters", topic: "Entertainments", description: "KIOF concert 2025."},
-  ]);
+  const [groups, setGroups] = useState([]);
   const [joinedGroupIds, setJoinedGroupIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
-  const handleCreateGroup = (newGroup: { name: string; topic: string; description: string }) => {
-    const newEntry = {
-      id: groups.length + 1,
-      ...newGroup,
-    };
-    setGroups([...groups, newEntry]);
-  };
+  const userId = localStorage.getItem("userId");
 
-  const handleJoin = (groupId: number) => {
-    if (!joinedGroupIds.includes(groupId)) {
-      setJoinedGroupIds([...joinedGroupIds, groupId]);
+  useEffect(() => {
+    // Load all communities
+    fetch("/api/communities")
+      .then((res) => res.json())
+      .then((data) => setGroups(data))
+      .catch((err) => console.error("Error fetching communities", err));
+
+    // Load joined communities
+    if (userId) {
+      fetch(`/api/communities/joined/${userId}`)
+        .then((res) => res.json())
+        .then((data) => {
+          const joinedIds = data.map((entry: any) => entry.communityId);
+          setJoinedGroupIds(joinedIds);
+        })
+        .catch((err) => console.error("Error fetching joined groups", err));
+    }
+  }, [userId]);
+
+  const handleJoin = async (groupId: number) => {
+    if (!userId) {
+      alert("Please log in to join a community.");
+      return;
+    }
+
+    try {
+      const res = await fetch("/api/communities/join", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, communityId: groupId }),
+      });
+
+      if (res.ok) {
+        setJoinedGroupIds((prev) => [...prev, groupId]);
+      } else {
+        const errorData = await res.json();
+        alert(errorData.message || "Failed to join group");
+      }
+    } catch (err) {
+      alert("Error joining group");
     }
   };
 
-  const joinedGroups = groups.filter((group) => joinedGroupIds.includes(group.id));
-  const filteredGroups = groups.filter((group) =>
+  const handleCreateGroup = async (newGroup: { name: string; topic: string; description: string }) => {
+    try {
+      const res = await fetch("/api/communities", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newGroup),
+      });
+
+      const created = await res.json();
+      setGroups([...groups, created]);
+    } catch (err) {
+      alert("Failed to create community.");
+    }
+  };
+
+  const filteredGroups = groups.filter((group: any) =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const joinedGroups = groups.filter((group: any) => joinedGroupIds.includes(group.id));
 
   return (
     <div className="community-container">
       <aside className="sidebar left-sidebar">
-
         <ul>
           <li>
             <h3><Link to="/">Home</Link></h3>
@@ -54,7 +96,7 @@ const Community = () => {
               ➕ Create a community
             </button>
           </li>
-          {joinedGroups.map((group) => (
+          {joinedGroups.map((group: any) => (
             <li key={group.id}>
               <Link to={`/community/${group.id}`}>{group.name}</Link>
             </li>
@@ -78,7 +120,7 @@ const Community = () => {
         <div className="group-list">
           <h3>Available Communities</h3>
           {filteredGroups.length > 0 ? (
-            filteredGroups.map((group) => (
+            filteredGroups.map((group: any) => (
               <div key={group.id} className="group-item">
                 <div>
                   <strong>{group.name}</strong>
