@@ -8,9 +8,16 @@ const eventCategories = [
     "Sports", "Entertainment", "Exhibitions", "Seminars", "Business", "Travel", "Others",
 ];
 
+type CommunityGroup = {
+  id: number;
+  name: string;
+  topic: string;
+  description: string;
+};
+
 const Community = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState<CommunityGroup[]>([]);
   const [joinedGroupIds, setJoinedGroupIds] = useState<number[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -18,14 +25,14 @@ const Community = () => {
 
   useEffect(() => {
     // Load all communities
-    fetch("/api/communities")
+    fetch("http://localhost:5000/api/communities")
       .then((res) => res.json())
       .then((data) => setGroups(data))
       .catch((err) => console.error("Error fetching communities", err));
 
     // Load joined communities
     if (userId) {
-      fetch(`/api/communities/joined/${userId}`)
+      fetch(`http://localhost:5000/api/communities/joined/${userId}`)
         .then((res) => res.json())
         .then((data) => {
           const joinedIds = data.map((entry: any) => entry.communityId);
@@ -42,7 +49,7 @@ const Community = () => {
     }
 
     try {
-      const res = await fetch("/api/communities/join", {
+      const res = await fetch("http://localhost:5000/api/communities/join", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, communityId: groupId }),
@@ -67,9 +74,16 @@ const Community = () => {
         body: JSON.stringify(newGroup),
       });
 
+      if (!res.ok) {
+      const errData = await res.json();
+      console.error("Create failed:", errData);
+      alert(errData.message || "Failed to create community.");
+      return;
+    }
       const created = await res.json();
       setGroups([...groups, created]);
     } catch (err) {
+      console.error("Network error:", err);
       alert("Failed to create community.");
     }
   };

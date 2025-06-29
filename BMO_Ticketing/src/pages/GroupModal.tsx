@@ -1,4 +1,4 @@
-/* This is the form for create new group in community page.*/ 
+/* This is the form for create new community in community page.*/ 
 import { useState } from "react";
 import "../css/GroupModal.css";
 
