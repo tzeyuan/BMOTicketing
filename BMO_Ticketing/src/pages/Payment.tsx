@@ -1,28 +1,50 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import "../css/Payment.css";
 
 const Payment = () => {
+  
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { event, date, ticketType } = location.state || {};
+  const userId = localStorage.getItem("userId");
+
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expiry, setExpiry] = useState("");
-  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Simulate ticket purchase
+    if (!userId || !event || !date || !ticketType) {
+      alert("Missing required information.");
+      return;
+    }
+
     const newTicket = {
-      event: "Selected Event",
-      date: "Pending Confirmation",
-      qrCode: "/sampleQR.png", 
+      userId,
+      event,
+      date,
+      ticketType,
+      qrCode: "/sampleQR.png",
     };
 
-    const existing = JSON.parse(localStorage.getItem("tickets") || "[]");
-    localStorage.setItem("tickets", JSON.stringify([...existing, newTicket]));
+    try {
+      const res = await fetch("http://localhost:5000/api/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newTicket),
+      });
 
-    alert("Payment successful! Ticket added to your profile.");
-    navigate("/profile");
+      if (res.ok) {
+        alert("Payment successful. Ticket saved!");
+        navigate("/profile");
+      } else {
+        alert("Failed to save ticket.");
+      }
+    } catch (err) {
+      alert("Server error during ticket saving.");
+    }
   };
 
   return (
@@ -54,7 +76,7 @@ const Payment = () => {
             required
           />
 
-          <button type="submit" className="pay-btn">Pay Now</button>
+          <button type="submit" className="pay-btn">Confirm Payment</button>
         </form>
       </div>
     </div>
