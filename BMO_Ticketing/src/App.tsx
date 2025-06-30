@@ -28,7 +28,7 @@ function App() {
                     <Route path="/community" element={<Community />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/profile" element={<Payment />} />
+                    <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
                 </Routes>
             </Layout>

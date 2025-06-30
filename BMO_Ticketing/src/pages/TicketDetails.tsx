@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate  } from "react-router-dom";
 import { useState } from "react";
 import "../css/TicketDetails.css";
 
@@ -51,8 +51,10 @@ const eventData: Record<
   },
 };
 
+
 const TicketDetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const event = eventData[id ?? ""];
   const [activeTab, setActiveTab] = useState("ticket");
   const [selectedTicket, setSelectedTicket] = useState("");
@@ -60,6 +62,18 @@ const TicketDetails = () => {
   if (!event) {
     return <div className="ticket-details"><h2>Event not found</h2></div>;
   }
+
+  const handleContinue = () => {
+    if (!selectedTicket) return;
+    // Navigate to payment page and pass selected data
+    navigate("/payment", {
+      state: {
+        eventTitle: event.title,
+        date: event.date,
+        ticketType: selectedTicket,
+      },
+    });
+  };
 
   return (
     <div className="ticket-details">
@@ -87,7 +101,6 @@ const TicketDetails = () => {
               <div className="ticket-info">
                 <h2>{event.title}</h2>
                 <p><strong>Artist:</strong> {event.artist}</p>
-                <p><strong>Price:</strong> {event.price}</p>
                 <p><strong>Date:</strong> {event.date}</p>
                 <p><strong>Venue:</strong> {event.venue}</p>
                 <p><strong>Price From:</strong> {event.price}</p>
@@ -103,8 +116,8 @@ const TicketDetails = () => {
                   ))}
                 </select>
 
-                <button className="buy-button" disabled={!selectedTicket}>
-                  {selectedTicket ? `Buy ${selectedTicket}` : "Select Seat"}
+                <button className="buy-button" onClick={handleContinue} disabled={!selectedTicket}>
+                  {selectedTicket ? `Continue to Payment` : "Select Ticket Type"}
                 </button>
               </div>
             </div>
