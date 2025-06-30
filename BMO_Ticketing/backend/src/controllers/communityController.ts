@@ -1,7 +1,8 @@
 import Community from "../models/Community";
 import JoinedCommunity from "../models/JoinedCommunity";
+import { Request, Response } from "express";
 
-export const createCommunity = async (req, res) => {
+export const createCommunity = async (req: Request, res: Response) => {
   try {
     const { name, topic, description } = req.body;
     const community = await Community.create({ name, topic, description });
@@ -11,12 +12,12 @@ export const createCommunity = async (req, res) => {
   }
 };
 
-export const getCommunities = async (req, res) => {
+export const getCommunities = async (req: Request, res: Response) => {
   const communities = await Community.findAll();
   res.json(communities);
 };
 
-export const joinCommunity = async (req, res) => {
+export const joinCommunity = async (req: Request, res: Response) => {
   const { userId, communityId } = req.body;
 
   const existing = await JoinedCommunity.findOne({ where: { userId, communityId } });
@@ -28,7 +29,7 @@ export const joinCommunity = async (req, res) => {
   res.status(201).json(joined);
 };
 
-export const getJoinedCommunities = async (req, res) => {
+export const getJoinedCommunities = async (req: Request, res: Response) => {
   const { userId } = req.params;
 
   const joined = await JoinedCommunity.findAll({ where: { userId } });

@@ -1,11 +1,11 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-import sequelize from "../config/db";
-import authRoutes from "./routes/authRoutes";
+const sequelize = require("./config/db");        
+const authRoutes = require("./routes/authRoutes"); 
 import communityRoutes from "./routes/communityRoutes";
-import Community from "./models/Community";
-import JoinedCommunity from "./models/JoinedCommunity";
+import "./models/Community";
+import "./models/JoinedCommunity";
 
 
 dotenv.config();
@@ -17,9 +17,14 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/communities", communityRoutes);
 
+const PORT = process.env.PORT || 5000;
+
 sequelize.sync({ alter: true }).then(() => {
   console.log("Database synced");
-  app.listen(Number(process.env.PORT) || 5000, () => {
-    console.log(`Server running on port ${process.env.PORT}`);
+  app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err: unknown) => {
+    console.error("DB sync error:", err);
   });
-});
