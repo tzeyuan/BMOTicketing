@@ -1,9 +1,16 @@
 import "../css/Profile.css";
 import { useEffect, useState } from "react";
 
+type Ticket = {
+  event: string;
+  date: string;
+  ticketType: string;
+  qrCode: string;
+};
+
 const Profile = () => {
   const [username, setUsername] = useState("Guest");
-  const [tickets, setTickets] = useState([]);
+  const [tickets, setTickets] = useState<Ticket[]>([]);
 
   useEffect(() => {
     const storedUser = localStorage.getItem("username");
