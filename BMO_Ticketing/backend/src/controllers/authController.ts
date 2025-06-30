@@ -1,7 +1,9 @@
-const bcrypt = require("bcrypt");
-const User = require("../models/User");
+// authController.ts
+import { Request, Response } from "express";
+import bcrypt from "bcrypt";
+import User from "../models/User";
 
-exports.signup = async (req, res) => {
+export const signup = async (req: Request, res: Response) => {
   const { username, email, password } = req.body;
   try {
     const exist = await User.findOne({ where: { email } });
@@ -11,12 +13,12 @@ exports.signup = async (req, res) => {
     const user = await User.create({ username, email, password: hash });
 
     res.status(201).json({ message: "User registered", user: user.username });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ message: "Signup error", error: err.message });
   }
 };
 
-exports.login = async (req, res) => {
+export const login = async (req: Request, res: Response) => {
   const { email, password } = req.body;
   try {
     const user = await User.findOne({ where: { email } });
@@ -26,7 +28,7 @@ exports.login = async (req, res) => {
     if (!match) return res.status(401).json({ message: "Invalid password" });
 
     res.status(200).json({ message: "Login successful", user: user.username });
-  } catch (err) {
+  } catch (err: any) {
     res.status(500).json({ message: "Login error", error: err.message });
   }
 };
