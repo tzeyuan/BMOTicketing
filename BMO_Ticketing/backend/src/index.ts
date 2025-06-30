@@ -6,6 +6,7 @@ import authRoutes from "./routes/authRoutes";
 import communityRoutes from "./routes/communityRoutes";
 import "./models/Community";
 import "./models/JoinedCommunity";
+import ticketRoutes from "./routes/ticketRoutes";
 
 
 dotenv.config();
@@ -16,6 +17,8 @@ app.use(express.json());
 
 app.use("/api/auth", authRoutes); 
 app.use("/api/communities", communityRoutes);
+app.use("/api/tickets", ticketRoutes);
+
 
 const PORT = process.env.PORT || 5000;
 

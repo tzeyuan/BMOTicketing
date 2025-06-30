@@ -6,9 +6,9 @@ const Payment = () => {
   
   const navigate = useNavigate();
   const location = useLocation();
-  const { event, date, ticketType } = location.state || {};
+  const initialData = location.state || JSON.parse(localStorage.getItem("paymentData") || "{}");
+  const { event, date, ticketType } = initialData;
   const userId = localStorage.getItem("userId");
-
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expiry, setExpiry] = useState("");

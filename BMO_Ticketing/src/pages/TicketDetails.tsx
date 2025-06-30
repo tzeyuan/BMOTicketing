@@ -63,17 +63,22 @@ const TicketDetails = () => {
     return <div className="ticket-details"><h2>Event not found</h2></div>;
   }
 
-  const handleContinue = () => {
-    if (!selectedTicket) return;
-    // Navigate to payment page and pass selected data
-    navigate("/payment", {
-      state: {
-        eventTitle: event.title,
-        date: event.date,
-        ticketType: selectedTicket,
-      },
-    });
+  const handleBuy = () => {
+  if (!selectedTicket) return;
+
+  const paymentData = {
+    event: event.title,
+    date: event.date,
+    ticketType: selectedTicket,
   };
+
+  localStorage.setItem("paymentData", JSON.stringify(paymentData));
+
+  navigate("/payment", {
+    state: paymentData,
+  });
+};
+
 
   return (
     <div className="ticket-details">
@@ -116,8 +121,8 @@ const TicketDetails = () => {
                   ))}
                 </select>
 
-                <button className="buy-button" onClick={handleContinue} disabled={!selectedTicket}>
-                  {selectedTicket ? `Continue to Payment` : "Select Ticket Type"}
+                <button className="buy-button" onClick={handleBuy} disabled={!selectedTicket}>
+                  {selectedTicket ? `Buy ${selectedTicket}` : "Select Ticket"}
                 </button>
               </div>
             </div>
