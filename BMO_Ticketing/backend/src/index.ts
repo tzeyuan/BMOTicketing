@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-const sequelize = require("./config/db");        
-const authRoutes = require("./routes/authRoutes"); 
+import sequelize from "./config/db";         
+import authRoutes from "./routes/authRoutes";
 import communityRoutes from "./routes/communityRoutes";
 import "./models/Community";
 import "./models/JoinedCommunity";
@@ -14,7 +14,7 @@ const app = express();
 app.use(cors()); 
 app.use(express.json());
 
-app.use("/api/auth", authRoutes);
+app.use("/api/auth", authRoutes); 
 app.use("/api/communities", communityRoutes);
 
 const PORT = process.env.PORT || 5000;
