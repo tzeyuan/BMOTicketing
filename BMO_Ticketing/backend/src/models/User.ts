@@ -1,5 +1,4 @@
-// User.ts
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/db";
 
 interface UserAttributes {
@@ -7,13 +6,17 @@ interface UserAttributes {
   username: string;
   email: string;
   password: string;
+  isAdmin: boolean;
 }
 
-class User extends Model<UserAttributes> implements UserAttributes {
+interface UserCreationAttributes extends Optional<UserAttributes, "id" | "isAdmin"> {}
+
+class User extends Model<UserAttributes,  UserCreationAttributes> implements UserAttributes {
   public id!: number;
   public username!: string;
   public email!: string;
   public password!: string;
+  public isAdmin!: boolean;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -38,6 +41,10 @@ User.init(
     password: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    isAdmin: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   },
   {
