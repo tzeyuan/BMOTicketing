@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
 import Ticket from "../models/Ticket";
 
-export const createTicket = async (req: Request, res: Response) => {
+// Create a new ticket (after payment)
+export const createTicket = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { userId, event, date, ticketType, qrCode } = req.body;
 
     if (!userId || !event || !date || !ticketType || !qrCode) {
-      return res.status(400).json({ message: "Missing ticket fields" });
+      return res.status(400).json({ message: "Missing fields" });
     }
 
     const ticket = await Ticket.create({
@@ -17,19 +18,25 @@ export const createTicket = async (req: Request, res: Response) => {
       qrCode,
     });
 
-    res.status(201).json(ticket);
+    return res.status(201).json(ticket);
   } catch (error) {
-    console.error("Ticket creation error:", error);
-    res.status(500).json({ message: "Failed to save ticket" });
+    return res.status(500).json({ message: "Failed to save ticket", error });
   }
 };
 
-export const getTicketsByUser = async (req: Request, res: Response) => {
+// Get all tickets for a user
+export const getUserTickets = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
     const tickets = await Ticket.findAll({ where: { userId } });
-    res.json(tickets);
+
+    return res.status(200).json(tickets);
   } catch (error) {
-    res.status(500).json({ message: "Failed to fetch tickets" });
+    return res.status(500).json({ message: "Failed to retrieve tickets", error });
   }
 };
