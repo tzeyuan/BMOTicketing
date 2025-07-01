@@ -4,15 +4,32 @@ import Ticket from "../models/Ticket";
 export const createTicket = async (req: Request, res: Response) => {
   try {
     const { userId, event, date, ticketType, qrCode } = req.body;
-    const ticket = await Ticket.create({ userId, event, date, ticketType, qrCode });
+
+    if (!userId || !event || !date || !ticketType || !qrCode) {
+      return res.status(400).json({ message: "Missing ticket fields" });
+    }
+
+    const ticket = await Ticket.create({
+      userId,
+      event,
+      date,
+      ticketType,
+      qrCode,
+    });
+
     res.status(201).json(ticket);
-  } catch (err) {
-    res.status(500).json({ message: "Failed to store ticket", error: err });
+  } catch (error) {
+    console.error("Ticket creation error:", error);
+    res.status(500).json({ message: "Failed to save ticket" });
   }
 };
 
-export const getUserTickets = async (req: Request, res: Response) => {
-  const { userId } = req.params;
-  const tickets = await Ticket.findAll({ where: { userId } });
-  res.json(tickets);
+export const getTicketsByUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const tickets = await Ticket.findAll({ where: { userId } });
+    res.json(tickets);
+  } catch (error) {
+    res.status(500).json({ message: "Failed to fetch tickets" });
+  }
 };
