@@ -25,8 +25,8 @@ const Login = () => {
 
       const data = await res.json();
       if (res.ok) {
-        login(data.user);
-        alert("Login successful!");
+        localStorage.setItem("username", data.user);
+        localStorage.setItem("userId", data.userId);
         navigate("/");
       } else {
         setError(data.message || "Login failed.");
