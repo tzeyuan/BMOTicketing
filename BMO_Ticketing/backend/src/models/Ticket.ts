@@ -3,7 +3,7 @@ import sequelize from "../config/db";
 
 const Ticket = sequelize.define("Ticket", {
   userId: {
-    type: DataTypes.INTEGER,
+    type: DataTypes.STRING,
     allowNull: false,
   },
   event: {
