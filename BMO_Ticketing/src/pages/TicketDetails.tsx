@@ -49,6 +49,42 @@ const eventData: Record<
       "Celebrate with Kiss of Life as they rock the stage with energy, charisma, and hits that fans love.",
     ticketTypes: ["VIP RM 988", "CAT 1 RM 788", "CAT 2 RM 588", "CAT 3 RM288"],
   },
+
+  "4": {
+    title: "CoComelon: Sing-A-Long LIVE",
+    artist: "CoComelon",
+    price: "RM 188.00",
+    venue: "Mega Star Arena, Kuala Lumpur",
+    date: "5/10/2025",
+    image: "/event4.png",
+    description:
+      "CoComelon, the global hit preschool series that captured the hearts of millions worldwide is stepping off the screen and onto the stage for the first time in Malaysia with its vibrant new musical show, CoComelon: Sing-A-Long LIVE!",
+    ticketTypes: ["VIP RM 388", "PS1 RM 288", "PS2 RM 188"],
+  },
+
+  "5": {
+    title: "2025 DOH KYUNG SOO ASIA CONCERT TOUR -DO it! in Malaysia-",
+    artist: "DOH KYUNG SOO",
+    price: "RM 488.00",
+    venue: "Axiata Arene, Kuala Lumpur",
+    date: "30/8/2025",
+    image: "/event5.png",
+    description:
+      "DO (Doh Kyung Soo)—the soulful main vocalist of global K-pop sensation EXO—returns to Kuala Lumpur for his first solo concert tour - 2025 DOH KYUNG SOO ASIA CONCERT TOUR <DO it! in Malaysia.",
+    ticketTypes: ["CAT1 RM 988", "CAT2 RM 888", "CAT3 RM 688", "CAT4 RM488"],
+  },
+
+  "6": {
+    title: "“BOUNDLESS” MIKA KOBAYASHI SPECIAL SHOW 2025",
+    artist: "MIKA KOBAYASHI",
+    price: "RM 190.00",
+    venue: "ZEPP, Kuala Lumpur",
+    date: "16/11/2025",
+    image: "/event6.png",
+    description:
+      "Japanese vocal powerhouse Mika Kobayashi is set to make her long awaited solo debut in Southeast Asia with a performance on 16th November 2025, at Zepp Kuala Lumpur. Titled “Boundless” – the show promises to be an immersive music experience unlike any other. Proudly presented by ICHIGO LIVE, this special show invites audience into a cinematic world built on sound and soul.",
+    ticketTypes: ["VIP RM 380", "GA RM 260", "DUO RM 190"],
+  },
 };
 
 

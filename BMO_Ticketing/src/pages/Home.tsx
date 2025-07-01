@@ -10,13 +10,10 @@ const Home = () => {
         
         <h2>Event Category</h2>
         <ul>
-          <li>Sports</li>
-          <li>Entertainments</li>
-          <li>Exhibitions</li>
-          <li>Seminars</li>
-          <li>Business</li>
-          <li>Travel</li>
-          <li>Others</li>
+          <li>K-POP</li>
+          <li>Mandarin</li>
+          <li>J-POP</li>
+          <li>Musical</li>
         </ul>
       </aside>
 
@@ -54,6 +51,30 @@ const Home = () => {
             <p>From RM 338.00</p>
             <button>Buy Now</button>
           </Link>
+
+          <Link to="/ticket/4" className="event-card">
+            <img src="/event4.png" alt="Event 4" />
+            <h3>CoComelon: Sing-A-Long LIVE</h3>
+            <h3>CoComelon</h3>
+            <p>From RM 188.00</p>
+            <button>Buy Now</button>
+          </Link>
+
+          <Link to="/ticket/5" className="event-card">
+            <img src="/event5.png" alt="Event 5" />
+            <h3>2025 DOH KYUNG SOO ASIA CONCERT TOUR -DO it! in Malaysia- </h3>
+            <h3>DOH KYUNG SOO</h3>
+            <p>From RM 488.00</p>
+            <button>Buy Now</button>
+          </Link>
+
+          <Link to="/ticket/6" className="event-card">
+            <img src="/event6.png" alt="Event 6" />
+            <h3>“BOUNDLESS” MIKA KOBAYASHI SPECIAL SHOW 2025 </h3>
+            <h3>MIKA KOBAYASHI</h3>
+            <p>From RM 190.00</p>
+            <button>Buy Now</button>
+          </Link>
         </div>
       </main>
 
@@ -61,8 +82,8 @@ const Home = () => {
       <aside className="sidebar right-sidebar">
         <h2>May 2025</h2>
         <ul>
-          <li>Event 1 - 8:00PM</li>
-          <li>Event 2 - 6:25PM</li>
+          <li>aespa SYNK: Parallel - 8:00PM</li>
+          <li>Final Lap: JJ20- 6:30PM</li>
           
           <li>
             <Link to="/community" className="community-link">Join Community</Link>

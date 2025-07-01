@@ -15,7 +15,6 @@ const Navbar = () => {
       
 
       <nav className="navbar-links">
-        <Link to="/events">Concerts</Link>
         <Link to="/merchandise">Merchandise</Link>
         <Link to="/aboutus">About Us</Link>
       
