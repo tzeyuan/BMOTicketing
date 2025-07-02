@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import Event from "../models/Event";
+import User from "../models/User";
 
+// Create Event
 export const createEvent = async (req: Request, res: Response) => {
   try {
     const event = await Event.create(req.body);
@@ -10,28 +12,28 @@ export const createEvent = async (req: Request, res: Response) => {
   }
 };
 
+// Get All Events
 export const getEvents = async (_: Request, res: Response) => {
   const events = await Event.findAll();
   res.json(events);
 };
 
-export const getEventById = async (req: Request, res: Response) => {
-  const event = await Event.findByPk(req.params.id);
-  event ? res.json(event) : res.status(404).json({ message: "Event not found" });
-};
-
+// Update Event
 export const updateEvent = async (req: Request, res: Response) => {
-  const event = await Event.findByPk(req.params.id);
-  if (!event) return res.status(404).json({ message: "Event not found" });
-
-  await event.update(req.body);
-  res.json(event);
+  const { id } = req.params;
+  await Event.update(req.body, { where: { id } });
+  res.json({ message: "Event updated" });
 };
 
+// Delete Event
 export const deleteEvent = async (req: Request, res: Response) => {
-  const event = await Event.findByPk(req.params.id);
-  if (!event) return res.status(404).json({ message: "Event not found" });
+  const { id } = req.params;
+  await Event.destroy({ where: { id } });
+  res.json({ message: "Event deleted" });
+};
 
-  await event.destroy();
-  res.status(204).send();
+// Get all users
+export const getUsers = async (_: Request, res: Response) => {
+  const users = await User.findAll({ attributes: ["id", "username", "email", "isAdmin"] });
+  res.json(users);
 };

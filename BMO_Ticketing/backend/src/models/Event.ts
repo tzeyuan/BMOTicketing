@@ -1,27 +1,45 @@
-import { DataTypes, Model } from "sequelize";
+import { DataTypes, Model, Optional } from "sequelize";
 import sequelize from "../config/db";
 
-class Event extends Model {}
+interface EventAttributes {
+  id?: number;
+  title: string;
+  artist: string;
+  price: string;
+  venue: string;
+  date: string;
+  image: string;
+  description: string;
+  ticketTypes: string; // comma-separated string
+}
 
-Event.init({
-  id: {
-    type: DataTypes.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    primaryKey: true,
+interface EventCreationAttributes extends Optional<EventAttributes, "id"> {}
+
+class Event extends Model<EventAttributes, EventCreationAttributes> implements EventAttributes {
+  public id!: number;
+  public title!: string;
+  public artist!: string;
+  public price!: string;
+  public venue!: string;
+  public date!: string;
+  public image!: string;
+  public description!: string;
+  public ticketTypes!: string;
+}
+
+Event.init(
+  {
+    id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
+    title: { type: DataTypes.STRING, allowNull: false },
+    artist: { type: DataTypes.STRING, allowNull: false },
+    price: { type: DataTypes.STRING, allowNull: false },
+    venue: { type: DataTypes.STRING, allowNull: false },
+    date: { type: DataTypes.STRING, allowNull: false },
+    image: { type: DataTypes.STRING, allowNull: false },
+    description: { type: DataTypes.TEXT, allowNull: false },
+    ticketTypes: { type: DataTypes.STRING, allowNull: false },
   },
-  title: DataTypes.STRING,
-  artist: DataTypes.STRING,
-  price: DataTypes.STRING,
-  venue: DataTypes.STRING,
-  date: DataTypes.STRING,
-  image: DataTypes.STRING,
-  description: DataTypes.TEXT,
-  ticketTypes: DataTypes.JSON, // store as array
-}, {
-  sequelize,
-  modelName: "Event",
-  tableName: "events",
-  timestamps: true,
-});
+  { sequelize, tableName: "events", timestamps: true }
+);
 
 export default Event;
