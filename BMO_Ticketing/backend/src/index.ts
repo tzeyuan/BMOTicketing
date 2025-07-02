@@ -7,6 +7,7 @@ import sequelize from "./config/db";
 import authRoutes from "./routes/authRoutes";
 import communityRoutes from "./routes/communityRoutes";
 import ticketRoutes from "./routes/ticketRoutes";
+import eventRoutes from "./routes/eventRoutes";
 
 // Model imports (to register with Sequelize)
 import "./models/User";
@@ -30,6 +31,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/communities", communityRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/events", eventRoutes);
 
 // Server start
 const PORT = process.env.PORT || 5000;
