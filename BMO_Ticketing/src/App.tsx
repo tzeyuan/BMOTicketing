@@ -15,7 +15,7 @@ import Payment from "./pages/Payment";
 import CommDiscussion from "./pages/CommDiscussion";
 
 //Admin Panel
-import AdminPanel from "./pages/AdminPanel";
+import AdminPanel from "./admin/AdminPanel";
 
 
 function App() {
