@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
 
+//User Portal
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
@@ -13,8 +14,13 @@ import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import CommDiscussion from "./pages/CommDiscussion";
 
+//Admin Panel
+import AdminPanel from "./pages/AdminPanel";
+
 
 function App() {
+    const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
+
     return (
         <Router>
             <Layout>
@@ -30,6 +36,8 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
+                    <Route path="/" element={<Home />} />
+                    {isAdmin && <Route path="/admin" element={<AdminPanel />} />}   
                 </Routes>
             </Layout>
         </Router>
