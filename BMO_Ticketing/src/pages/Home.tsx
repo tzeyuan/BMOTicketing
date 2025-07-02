@@ -1,13 +1,34 @@
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import "../css/Home.css";
 
+interface Event {
+  id: number;
+  title: string;
+  artist: string;
+  price: string;
+  image: string;
+}
 
 const Home = () => {
+  const [events, setEvents] = useState<Event[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+
+  useEffect(() => {
+    fetch("http://localhost:5000/api/events")
+      .then((res) => res.json())
+      .then((data) => setEvents(data))
+      .catch((err) => console.error("Failed to fetch events:", err));
+  }, []);
+
+  const filteredEvents = events.filter((event) =>
+    event.title.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
     <div className="home-container">
       {/* Left Sidebar */}
       <aside className="sidebar left-sidebar">
-        
         <h2>Event Category</h2>
         <ul>
           <li>K-POP</li>
@@ -21,60 +42,31 @@ const Home = () => {
       <main className="main-content">
         {/* Search Bar */}
         <div className="search-bar">
-          <input type="text" placeholder="Search event or keyword" />
+          <input
+            type="text"
+            placeholder="Search event or keyword"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
           <button>Search</button>
         </div>
 
         <h2 className="section-title">Trending Events in Malaysia</h2>
 
         <div className="event-grid">
-          <Link to="/ticket/1" className="event-card">
-            <img src="/event1.png" alt="Event 1" />
-            <h3>aespa SYNK: Parallel Line</h3>
-            <h3>aespa</h3>
-            <p>From RM 257.00</p>
-            <button>Buy Now</button>
-          </Link>
-
-          <Link to="/ticket/2" className="event-card">
-            <img src="/event2.png" alt="Event 2" />
-            <h3>Final Lap : JJ20 Kuala Lumpur</h3>
-            <h3>JJ Lin</h3>
-            <p>From RM 288.00</p>
-            <button>Buy Now</button>
-          </Link>
-
-          <Link to="/ticket/3" className="event-card">
-            <img src="/event3.png" alt="Event 3" />
-            <h3>KISS ROAD in Malaysia</h3>
-            <h3>Kiss of Life</h3>
-            <p>From RM 338.00</p>
-            <button>Buy Now</button>
-          </Link>
-
-          <Link to="/ticket/4" className="event-card">
-            <img src="/event4.png" alt="Event 4" />
-            <h3>CoComelon: Sing-A-Long LIVE</h3>
-            <h3>CoComelon</h3>
-            <p>From RM 188.00</p>
-            <button>Buy Now</button>
-          </Link>
-
-          <Link to="/ticket/5" className="event-card">
-            <img src="/event5.png" alt="Event 5" />
-            <h3>2025 DOH KYUNG SOO ASIA CONCERT TOUR -DO it! in Malaysia- </h3>
-            <h3>DOH KYUNG SOO</h3>
-            <p>From RM 488.00</p>
-            <button>Buy Now</button>
-          </Link>
-
-          <Link to="/ticket/6" className="event-card">
-            <img src="/event6.png" alt="Event 6" />
-            <h3>“BOUNDLESS” MIKA KOBAYASHI SPECIAL SHOW 2025 </h3>
-            <h3>MIKA KOBAYASHI</h3>
-            <p>From RM 190.00</p>
-            <button>Buy Now</button>
-          </Link>
+          {filteredEvents.length > 0 ? (
+            filteredEvents.map((event) => (
+              <Link to={`/ticket/${event.id}`} key={event.id} className="event-card">
+                <img src={event.image} alt={event.title} />
+                <h3>{event.title}</h3>
+                <h3>{event.artist}</h3>
+                <p>From {event.price}</p>
+                <button>Buy Now</button>
+              </Link>
+            ))
+          ) : (
+            <p>No events found.</p>
+          )}
         </div>
       </main>
 
@@ -84,7 +76,6 @@ const Home = () => {
         <ul>
           <li>aespa SYNK: Parallel - 8:00PM</li>
           <li>Final Lap: JJ20- 6:30PM</li>
-          
           <li>
             <Link to="/community" className="community-link">Join Community</Link>
           </li>
