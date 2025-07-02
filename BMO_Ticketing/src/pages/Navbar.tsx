@@ -1,27 +1,33 @@
 import { Link } from "react-router-dom";
 import "../css/Navbar.css";
-import { useContext} from "react";
+import { useContext } from "react";
 import { AuthContext } from "../AuthContext";
 
 const Navbar = () => {
   const { username } = useContext(AuthContext);
+  const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
 
   return (
     <nav className="navbar">
-        <Link to="/" className="navbar-brand">
-          <img src="/Icon.png" alt="Logo" className="navbar-logo" />
-          <h1 className="navbar-title">BMO Ticketing</h1>
-        </Link>
-      
+      <Link to="/" className="navbar-brand">
+        <img src="/Icon.png" alt="Logo" className="navbar-logo" />
+        <h1 className="navbar-title">BMO Ticketing</h1>
+      </Link>
 
       <nav className="navbar-links">
         <Link to="/merchandise">Merchandise</Link>
         <Link to="/aboutus">About Us</Link>
-      
-      
-      {username ? (
+
+        {/* Admin panel link */}
+        {isAdmin && (
+          <Link to="/admin" className="admin-btn">
+            Admin Panel
+          </Link>
+        )}
+
+        {username ? (
           <Link to="/profile">
-            <img src="/default_profilepic.png" alt="Profile" className="navbar-profile-icon" />
+            <img src="/default_profilepic.png" alt="Profile" className="navbar-profile-icon"/>
           </Link>
         ) : (
           <div className="navbar-auth">
