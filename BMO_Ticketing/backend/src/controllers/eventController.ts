@@ -1,39 +1,77 @@
 import { Request, Response } from "express";
 import Event from "../models/Event";
-import User from "../models/User";
 
-// Create Event
+// GET all events (for homepage and admin)
+export const getEvents = async (_req: Request, res: Response) => {
+  try {
+    const events = await Event.findAll();
+    res.status(200).json(events);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch events", error: err });
+  }
+};
+
+// CREATE new event
 export const createEvent = async (req: Request, res: Response) => {
   try {
-    const event = await Event.create(req.body);
-    res.status(201).json(event);
+    const {
+      title,
+      artist,
+      price,
+      venue,
+      date,
+      image,
+      description,
+      ticketTypes,
+    } = req.body;
+
+    const newEvent = await Event.create({
+      title,
+      artist,
+      price,
+      venue,
+      date,
+      image,
+      description,
+      ticketTypes,
+    });
+
+    res.status(201).json(newEvent);
   } catch (err) {
     res.status(500).json({ message: "Failed to create event", error: err });
   }
 };
 
-// Get All Events
-export const getEvents = async (_: Request, res: Response) => {
-  const events = await Event.findAll();
-  res.json(events);
-};
-
-// Update Event
+// UPDATE event by ID
 export const updateEvent = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await Event.update(req.body, { where: { id } });
-  res.json({ message: "Event updated" });
+  try {
+    const { id } = req.params;
+    const event = await Event.findByPk(id);
+
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    await event.update(req.body);
+    res.status(200).json(event);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update event", error: err });
+  }
 };
 
-// Delete Event
+// DELETE event by ID
 export const deleteEvent = async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await Event.destroy({ where: { id } });
-  res.json({ message: "Event deleted" });
-};
+  try {
+    const { id } = req.params;
+    const event = await Event.findByPk(id);
 
-// Get all users
-export const getUsers = async (_: Request, res: Response) => {
-  const users = await User.findAll({ attributes: ["id", "username", "email", "isAdmin"] });
-  res.json(users);
+    if (!event) {
+      return res.status(404).json({ message: "Event not found" });
+    }
+
+    await event.destroy();
+    res.status(204).end();
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete event", error: err });
+  }
 };
