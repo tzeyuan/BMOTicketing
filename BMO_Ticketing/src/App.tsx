@@ -36,7 +36,6 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
-                    <Route path="/" element={<Home />} />
                     {isAdmin && <Route path="/admin" element={<AdminPanel />} />}   
                 </Routes>
             </Layout>

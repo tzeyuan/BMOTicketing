@@ -1,13 +1,12 @@
 .admin-container {
   display: flex;
-  min-height: 100vh; 
+  min-height: 100vh;
   background-color: #f4f4f4;
 }
 
-
 .admin-sidebar {
   width: 220px;
-  background-color: #90e4cd;
+  background-color: #9fdac5;
   color: white;
   padding: 2rem 1rem;
   font-weight: bold;
