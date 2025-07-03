@@ -1,4 +1,5 @@
 import { useEffect, useState, ChangeEvent } from "react";
+import { useNavigate } from "react-router-dom"; // 👈 added
 import "../css/AdminPanel.css";
 
 interface Event {
@@ -20,6 +21,16 @@ interface User {
 }
 
 const AdminPanel = () => {
+  const navigate = useNavigate(); //used for redirect
+
+  //Admin Access Control
+  useEffect(() => {
+    const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
+    if (!isAdmin) {
+      navigate("/"); // Redirect to home if not admin
+    }
+  }, [navigate]);
+
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [form, setForm] = useState<Partial<Event>>({});

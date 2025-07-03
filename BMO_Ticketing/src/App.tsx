@@ -19,8 +19,6 @@ import AdminPanel from "./admin/AdminPanel";
 
 
 function App() {
-    const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
-
     return (
         <Router>
             <Layout>
@@ -36,7 +34,7 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
-                    {isAdmin && <Route path="/admin" element={<AdminPanel />} />}   
+                    <Route path="/admin" element={<AdminPanel />} />     
                 </Routes>
             </Layout>
         </Router>
