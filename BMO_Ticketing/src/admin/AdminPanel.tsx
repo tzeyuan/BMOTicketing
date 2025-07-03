@@ -129,18 +129,18 @@ const AdminPanel = () => {
         <h2>Event Management</h2>
 
         <form className="event-form" onSubmit={handleSubmit}>
-          <input name="title" placeholder="Title" value={form.title || ""} onChange={handleChange} required />
-          <input name="artist" placeholder="Artist" value={form.artist || ""} onChange={handleChange} required />
-          <input name="price" placeholder="Price" value={form.price || ""} onChange={handleChange} required />
-          <input name="venue" placeholder="Venue" value={form.venue || ""} onChange={handleChange} required />
-          <input type="date" name="date" value={form.date || ""} onChange={handleDateChange} required />
+          Title<input name="title" placeholder="Title" value={form.title || ""} onChange={handleChange} required />
+          Artist<input name="artist" placeholder="Artist" value={form.artist || ""} onChange={handleChange} required />
+          Price from<input name="price" placeholder="Price" value={form.price || ""} onChange={handleChange} required />
+          Venue<input name="venue" placeholder="Venue" value={form.venue || ""} onChange={handleChange} required />
+          Event Date<input type="date" name="date" value={form.date || ""} onChange={handleDateChange} required />
           
           <label>Upload Image</label>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
           {imagePreview && <img src={imagePreview} alt="Preview" className="preview-img" />}
 
-          <textarea name="description" placeholder="Description" value={form.description || ""} onChange={handleChange} required />
-
+          Description<textarea name="description" placeholder="Description" value={form.description || ""} onChange={handleChange} required />
+          Ticket Type:
           <div className="ticket-type-field">
             <input
               type="text"
