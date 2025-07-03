@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, ChangeEvent } from "react";
 import "../css/AdminPanel.css";
 
 interface Event {
@@ -23,90 +23,128 @@ const AdminPanel = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [form, setForm] = useState<Partial<Event>>({});
+  const [ticketTypes, setTicketTypes] = useState<string[]>([]);
+  const [ticketInput, setTicketInput] = useState("");
   const [editingId, setEditingId] = useState<number | null>(null);
+  const [imagePreview, setImagePreview] = useState<string>("");
 
-  // Load data
   useEffect(() => {
-    fetch("http://localhost:5000/api/events")
-      .then(res => res.json())
-      .then(setEvents);
-
-    fetch("http://localhost:5000/api/users")
-      .then(res => res.json())
-      .then(setUsers);
+    fetch("http://localhost:5000/api/events").then(res => res.json()).then(setEvents);
+    fetch("http://localhost:5000/api/users").then(res => res.json()).then(setUsers);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleTicketTypes = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm({ ...form, ticketTypes: e.target.value.split(",") });
+  const handleDateChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setForm({ ...form, date: e.target.value });
+  };
+
+  const handleImageUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setForm({ ...form, image: reader.result as string });
+        setImagePreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleAddTicket = () => {
+    if (ticketInput.trim()) {
+      setTicketTypes([...ticketTypes, ticketInput.trim()]);
+      setTicketInput("");
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    const eventPayload = { ...form, ticketTypes };
+
     const url = editingId
       ? `http://localhost:5000/api/events/${editingId}`
       : "http://localhost:5000/api/events";
-    const method = editingId ? "PUT" : "POST";
 
     const res = await fetch(url, {
-      method,
+      method: editingId ? "PUT" : "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
+      body: JSON.stringify(eventPayload),
     });
 
     if (res.ok) {
       const updated = await res.json();
-      if (editingId) {
-        setEvents(events.map(ev => (ev.id === editingId ? updated : ev)));
-      } else {
-        setEvents([...events, updated]);
-      }
-      setForm({});
-      setEditingId(null);
+      setEvents(editingId
+        ? events.map(ev => (ev.id === editingId ? updated : ev))
+        : [...events, updated]
+      );
+      resetForm();
     }
   };
 
+  const resetForm = () => {
+    setForm({});
+    setTicketTypes([]);
+    setTicketInput("");
+    setEditingId(null);
+    setImagePreview("");
+  };
+
+  const startEdit = (event: Event) => {
+    setForm(event);
+    setTicketTypes(event.ticketTypes);
+    setImagePreview(event.image);
+    setEditingId(event.id);
+  };
+
   const handleDelete = async (id: number) => {
-    const confirm = window.confirm("Delete this event?");
-    if (!confirm) return;
-
-    const res = await fetch(`http://localhost:5000/api/events/${id}`, {
-      method: "DELETE",
-    });
-
+    const res = await fetch(`http://localhost:5000/api/events/${id}`, { method: "DELETE" });
     if (res.ok) {
       setEvents(events.filter(ev => ev.id !== id));
     }
   };
 
-  const startEdit = (event: Event) => {
-    setForm(event);
-    setEditingId(event.id);
-  };
-
   return (
     <div className="admin-container">
-      {/* Sidebar */}
       <aside className="admin-sidebar">
         <h2>Admin Panel</h2>
         <p>Manage Events and Users</p>
       </aside>
 
-      {/* Main Content */}
       <main className="admin-main">
         <h2>Event Management</h2>
+
         <form className="event-form" onSubmit={handleSubmit}>
           <input name="title" placeholder="Title" value={form.title || ""} onChange={handleChange} required />
           <input name="artist" placeholder="Artist" value={form.artist || ""} onChange={handleChange} required />
           <input name="price" placeholder="Price" value={form.price || ""} onChange={handleChange} required />
           <input name="venue" placeholder="Venue" value={form.venue || ""} onChange={handleChange} required />
-          <input name="date" placeholder="Date" value={form.date || ""} onChange={handleChange} required />
-          <input name="image" placeholder="Image Path (e.g. /event1.png)" value={form.image || ""} onChange={handleChange} required />
+          <input type="date" name="date" value={form.date || ""} onChange={handleDateChange} required />
+          
+          <label>Upload Image</label>
+          <input type="file" accept="image/*" onChange={handleImageUpload} />
+          {imagePreview && <img src={imagePreview} alt="Preview" className="preview-img" />}
+
           <textarea name="description" placeholder="Description" value={form.description || ""} onChange={handleChange} required />
-          <input name="ticketTypes" placeholder="Ticket Types (comma separated)" value={form.ticketTypes?.join(",") || ""} onChange={handleTicketTypes} required />
+
+          <div className="ticket-type-field">
+            <input
+              type="text"
+              placeholder="Enter Ticket Type (e.g. VIP RM 988)"
+              value={ticketInput}
+              onChange={(e) => setTicketInput(e.target.value)}
+            />
+            <button type="button" onClick={handleAddTicket}>Add</button>
+          </div>
+          <ul className="ticket-type-list">
+            {ticketTypes.map((t, idx) => (
+              <li key={idx}>{t}</li>
+            ))}
+          </ul>
+
           <button type="submit">{editingId ? "Update Event" : "Create Event"}</button>
         </form>
 
@@ -132,9 +170,7 @@ const AdminPanel = () => {
         <h3>Registered Users</h3>
         <ul className="user-list">
           {users.map(user => (
-            <li key={user.id}>
-              {user.username} - {user.email}
-            </li>
+            <li key={user.id}>{user.username} - {user.email}</li>
           ))}
         </ul>
       </main>
