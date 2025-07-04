@@ -10,7 +10,7 @@ Event.init(
     price: { type: DataTypes.STRING, allowNull: false },
     venue: { type: DataTypes.STRING, allowNull: false },
     date: { type: DataTypes.STRING, allowNull: false },
-    image: { type: DataTypes.TEXT, allowNull: false },
+    image: { type: DataTypes.TEXT('long'), allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: false },
     ticketTypes: {
       type: DataTypes.JSON,
@@ -18,7 +18,7 @@ Event.init(
       get() {
         const raw = this.getDataValue("ticketTypes");
         return Array.isArray(raw) ? raw : [];
-      }
+      },
     },
   },
   {

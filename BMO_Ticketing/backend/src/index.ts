@@ -15,6 +15,7 @@ import "./models/User";
 import "./models/Community";
 import "./models/JoinedCommunity";
 import "./models/Ticket"; 
+import "./models/Event";
 
 // Initialize dotenv
 dotenv.config();
@@ -26,7 +27,9 @@ app.use(cors({
   origin: "http://localhost:5173",  
   credentials: true
 }));
-app.use(express.json());
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 
 // Routes
 app.use("/api/auth", authRoutes);

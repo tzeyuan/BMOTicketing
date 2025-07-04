@@ -25,6 +25,22 @@ export const createEvent = async (req: Request, res: Response) => {
       ticketTypes,
     } = req.body;
 
+    //Log what the backend receives
+    console.log("Incoming event payload:", req.body);
+
+    //Validate required fields
+    if (
+      !title || !artist || !price || !venue ||
+      !date || !image || !description || !ticketTypes
+    ) {
+      return res.status(400).json({ message: "Missing required fields" });
+    }
+
+    //Ensure ticketTypes is an array
+    if (!Array.isArray(ticketTypes)) {
+      return res.status(400).json({ message: "ticketTypes must be an array" });
+    }
+
     const newEvent = await Event.create({
       title,
       artist,
@@ -38,7 +54,8 @@ export const createEvent = async (req: Request, res: Response) => {
 
     res.status(201).json(newEvent);
   } catch (err) {
-    res.status(500).json({ message: "Failed to create event", error: err });
+    console.error("Create event error:", err);
+    res.status(500).json({ message: "Failed to create event", error: (err as any).message });
   }
 };
 
