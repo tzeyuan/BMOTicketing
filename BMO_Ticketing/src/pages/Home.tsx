@@ -61,7 +61,9 @@ const Home = () => {
                 <h3>{event.title}</h3>
                 <h3>{event.artist}</h3>
                 <p>From {event.price}</p>
-                <button>Buy Now</button>
+                <Link to={`/ticket/${event.id}`}>
+                  <button>Buy Now</button>
+                </Link>
               </Link>
             ))
           ) : (

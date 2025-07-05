@@ -18,24 +18,31 @@ const TicketDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [event, setEvent] = useState<EventData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("ticket");
   const [selectedTicket, setSelectedTicket] = useState("");
 
   useEffect(() => {
     if (id) {
       fetch(`http://localhost:5000/api/events/${id}`)
-        .then((res) => res.json())
-        .then((data) => setEvent(data))
-        .catch((err) => console.error("Failed to fetch event:", err));
+        .then((res) => {
+          if (!res.ok) throw new Error("Event not found");
+          return res.json();
+        })
+        .then((data) => {
+          setEvent(data);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setError(err.message);
+          setLoading(false);
+        });
     }
   }, [id]);
 
-  if (!event) {
-    return <div className="ticket-details"><h2>Loading event...</h2></div>;
-  }
-
   const handleBuy = () => {
-    if (!selectedTicket) return;
+    if (!selectedTicket || !event) return;
 
     const paymentData = {
       event: event.title,
@@ -44,11 +51,16 @@ const TicketDetails = () => {
     };
 
     localStorage.setItem("paymentData", JSON.stringify(paymentData));
-
-    navigate("/payment", {
-      state: paymentData,
-    });
+    navigate("/payment", { state: paymentData });
   };
+
+  if (loading) {
+    return <div className="ticket-details"><h2>Loading event...</h2></div>;
+  }
+
+  if (error || !event) {
+    return <div className="ticket-details"><h2>{error || "Event not found"}</h2></div>;
+  }
 
   return (
     <div className="ticket-details">
@@ -72,7 +84,11 @@ const TicketDetails = () => {
       <div className="tab-content">
         {activeTab === "ticket" && (
           <div className="tab-ticket">
-            <img src={event.image} alt={event.title} className="event-img" />
+            <img
+              src={event.image}
+              alt={event.title}
+              className="event-img"
+            />
             <div className="ticket-info">
               <h2>{event.title}</h2>
               <p><strong>Artist:</strong> {event.artist}</p>
@@ -86,8 +102,8 @@ const TicketDetails = () => {
                 onChange={(e) => setSelectedTicket(e.target.value)}
               >
                 <option value="">-- Choose Ticket --</option>
-                {event.ticketTypes.map((type, index) => (
-                  <option key={index} value={type}>{type}</option>
+                {event.ticketTypes.map((type, idx) => (
+                  <option key={idx} value={type}>{type}</option>
                 ))}
               </select>
 
@@ -108,7 +124,11 @@ const TicketDetails = () => {
             <p>{event.description}</p>
 
             <h3>Seating Plan</h3>
-            <img src="/bukitjalil_seatingplan.png" alt="Seating Plan" className="seating-plan" />
+            <img
+              src="/bukitjalil_seatingplan.png"
+              alt="Seating Plan"
+              className="seating-plan"
+            />
 
             <h3>Terms & Conditions</h3>
             <ul>
