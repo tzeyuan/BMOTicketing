@@ -13,6 +13,7 @@ import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import CommDiscussion from "./pages/CommDiscussion";
+import CommunityHome from "./pages/communityHome";
 
 //Admin Panel
 import AdminPanel from "./admin/AdminPanel";
@@ -34,6 +35,7 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
+                    <Route path="/communityHome/" element={<CommunityHome />} />
                     <Route path="/admin" element={<AdminPanel />} />     
                 </Routes>
             </Layout>
