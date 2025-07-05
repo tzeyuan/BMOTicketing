@@ -9,6 +9,7 @@ import communityRoutes from "./routes/communityRoutes";
 import ticketRoutes from "./routes/ticketRoutes";
 import eventRoutes from "./routes/eventRoutes";
 import userRoutes from "./routes/userRoutes";
+import threadRoutes from "./routes/threadRoutes";
 
 // Model imports (to register with Sequelize)
 import "./models/User";
@@ -16,6 +17,7 @@ import "./models/Community";
 import "./models/JoinedCommunity";
 import "./models/Ticket"; 
 import "./models/Event";
+import "./models/Thread";
 
 // Initialize dotenv
 dotenv.config();
@@ -37,6 +39,7 @@ app.use("/api/communities", communityRoutes);
 app.use("/api/tickets", ticketRoutes);
 app.use("/api/events", eventRoutes);
 app.use("/api/users", userRoutes);  
+app.use("/api/threads", threadRoutes);
 
 // Server start
 const PORT = process.env.PORT || 5000;

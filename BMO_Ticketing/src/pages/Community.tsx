@@ -99,7 +99,7 @@ const Community = () => {
       <aside className="sidebar left-sidebar">
         <ul>
           <li>
-            <h3><Link to="/">Community Main Page</Link></h3>
+            <h3><Link to="/CommunityHome">Community Main Page</Link></h3>
           </li>
         </ul>
 
