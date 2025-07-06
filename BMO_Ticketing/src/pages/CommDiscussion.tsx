@@ -5,54 +5,65 @@ import "../css/commDiscussion.css";
 interface Thread {
   id: number;
   content: string;
-  replies: string[];
+  replies: { id: number; content: string }[];
 }
 
 const CommDiscussion = () => {
-  const { id: communityId } = useParams();
+  const { id } = useParams();
   const [threads, setThreads] = useState<Thread[]>([]);
   const [newThread, setNewThread] = useState("");
 
+  // Fetch threads for this community
   useEffect(() => {
-    if (communityId) {
-      fetch(`http://localhost:5000/api/threads/${communityId}`)
-        .then(res => res.json())
-        .then(data => setThreads(data))
-        .catch(err => console.error("Error fetching threads:", err));
+    if (id) {
+      fetch(`http://localhost:5000/api/threads/community/${id}`)
+        .then((res) => res.json())
+        .then((data) => setThreads(data))
+        .catch((err) => console.error("Error fetching threads:", err));
     }
-  }, [communityId]);
+  }, [id]);
 
-  const handlePostThread = async (e: React.FormEvent) => {
+  // Post new thread
+  const handlePostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newThread.trim() || !communityId) return;
+    if (!newThread.trim() || !id) return;
 
     const res = await fetch("http://localhost:5000/api/threads", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ communityId: parseInt(communityId), content: newThread }),
+      body: JSON.stringify({
+        content: newThread,
+        communityId: Number(id),
+      }),
     });
 
     if (res.ok) {
       const created = await res.json();
-      setThreads([created, ...threads]);
+      setThreads((prev) => [created, ...prev]);
       setNewThread("");
     } else {
       alert("Failed to post thread.");
     }
   };
 
-  const handleReply = async (threadId: number, reply: string) => {
-    if (!reply.trim()) return;
+  const handleReply = async (threadId: number, replyText: string) => {
+    if (!replyText.trim()) return;
 
-    const res = await fetch(`http://localhost:5000/api/threads/${threadId}/reply`, {
+    const res = await fetch("http://localhost:5000/api/threads/reply", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ reply }),
+      body: JSON.stringify({ threadId, content: replyText }),
     });
 
     if (res.ok) {
-      const updated = await res.json();
-      setThreads(threads.map(t => (t.id === threadId ? updated : t)));
+      const newReply = await res.json();
+      setThreads((prev) =>
+        prev.map((thread) =>
+          thread.id === threadId
+            ? { ...thread, replies: [...thread.replies, newReply] }
+            : thread
+        )
+      );
     } else {
       alert("Failed to post reply.");
     }
@@ -62,9 +73,9 @@ const CommDiscussion = () => {
     <div className="discussion-page">
       <h2>Community Thread</h2>
 
-      <form onSubmit={handlePostThread} className="post-form">
+      <form onSubmit={handlePostSubmit} className="post-form">
         <textarea
-          placeholder="Start a discussion..."
+          placeholder="Ask a question or start a discussion..."
           value={newThread}
           onChange={(e) => setNewThread(e.target.value)}
           required
@@ -77,10 +88,10 @@ const CommDiscussion = () => {
           <div key={thread.id} className="post">
             <p className="post-content">{thread.content}</p>
             <div className="replies">
-              {thread.replies.map((r, idx) => (
-                <div key={idx} className="reply">↪ {r}</div>
+              {thread.replies.map((reply) => (
+                <div key={reply.id} className="reply">↪ {reply.content}</div>
               ))}
-              <ReplyForm threadId={thread.id} onReply={handleReply} />
+              <ReplyForm postId={thread.id} onReply={handleReply} />
             </div>
           </div>
         ))}
@@ -89,13 +100,19 @@ const CommDiscussion = () => {
   );
 };
 
-const ReplyForm = ({ threadId, onReply }: { threadId: number; onReply: (id: number, reply: string) => void }) => {
-  const [replyText, setReplyText] = useState("");
+const ReplyForm = ({
+  postId,
+  onReply,
+}: {
+  postId: number;
+  onReply: (id: number, reply: string) => void;
+}) => {
+  const [text, setText] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onReply(threadId, replyText);
-    setReplyText("");
+    onReply(postId, text);
+    setText("");
   };
 
   return (
@@ -103,8 +120,8 @@ const ReplyForm = ({ threadId, onReply }: { threadId: number; onReply: (id: numb
       <input
         type="text"
         placeholder="Write a reply..."
-        value={replyText}
-        onChange={(e) => setReplyText(e.target.value)}
+        value={text}
+        onChange={(e) => setText(e.target.value)}
       />
       <button type="submit">Reply</button>
     </form>

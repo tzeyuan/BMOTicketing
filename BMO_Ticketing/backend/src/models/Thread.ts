@@ -1,5 +1,7 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/db";
+import Reply from "./Reply"; 
+import Community from "./Community"; 
 
 class Thread extends Model {}
 
@@ -29,5 +31,16 @@ Thread.init(
     timestamps: true,
   }
 );
+
+// Associations
+Thread.hasMany(Reply, {
+  foreignKey: "threadId",
+  as: "replies",
+});
+
+Reply.belongsTo(Thread, {
+  foreignKey: "threadId",
+  as: "thread",
+});
 
 export default Thread;
