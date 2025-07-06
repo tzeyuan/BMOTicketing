@@ -1,76 +1,86 @@
 import { useParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "../css/commDiscussion.css";
 
-interface Post {
+interface Thread {
   id: number;
   content: string;
   replies: string[];
 }
 
-const initialPosts: Post[] = [
-  {
-    id: 1,
-    content: "What time should we gather before the aespa concert?",
-    replies: ["Around 6 PM at the main gate!", "I'm thinking 5:30 to grab snacks."],
-  },
-  {
-    id: 2,
-    content: "Anyone bringing banners or lightsticks?",
-    replies: ["I am! Got mine from Shopee.", "Let's design one together."],
-  },
-];
-
 const CommDiscussion = () => {
-  const { id } = useParams();
-  const [posts, setPosts] = useState<Post[]>(initialPosts);
-  const [newPost, setNewPost] = useState("");
+  const { id: communityId } = useParams();
+  const [threads, setThreads] = useState<Thread[]>([]);
+  const [newThread, setNewThread] = useState("");
 
-  const handlePostSubmit = (e: React.FormEvent) => {
+  useEffect(() => {
+    if (communityId) {
+      fetch(`http://localhost:5000/api/threads/${communityId}`)
+        .then(res => res.json())
+        .then(data => setThreads(data))
+        .catch(err => console.error("Error fetching threads:", err));
+    }
+  }, [communityId]);
+
+  const handlePostThread = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (newPost.trim()) {
-      const newEntry: Post = {
-        id: posts.length + 1,
-        content: newPost,
-        replies: [],
-      };
-      setPosts([newEntry, ...posts]);
-      setNewPost("");
+    if (!newThread.trim() || !communityId) return;
+
+    const res = await fetch("http://localhost:5000/api/threads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ communityId: parseInt(communityId), content: newThread }),
+    });
+
+    if (res.ok) {
+      const created = await res.json();
+      setThreads([created, ...threads]);
+      setNewThread("");
+    } else {
+      alert("Failed to post thread.");
     }
   };
 
-  const handleReply = (postId: number, reply: string) => {
+  const handleReply = async (threadId: number, reply: string) => {
     if (!reply.trim()) return;
-    setPosts((prev) =>
-      prev.map((p) =>
-        p.id === postId ? { ...p, replies: [...p.replies, reply] } : p
-      )
-    );
+
+    const res = await fetch(`http://localhost:5000/api/threads/${threadId}/reply`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ reply }),
+    });
+
+    if (res.ok) {
+      const updated = await res.json();
+      setThreads(threads.map(t => (t.id === threadId ? updated : t)));
+    } else {
+      alert("Failed to post reply.");
+    }
   };
 
   return (
     <div className="discussion-page">
-      <h2>Community Thread: Group Discussion</h2>
+      <h2>Community Thread</h2>
 
-      <form onSubmit={handlePostSubmit} className="post-form">
+      <form onSubmit={handlePostThread} className="post-form">
         <textarea
-          placeholder="Ask a question or start a discussion..."
-          value={newPost}
-          onChange={(e) => setNewPost(e.target.value)}
+          placeholder="Start a discussion..."
+          value={newThread}
+          onChange={(e) => setNewThread(e.target.value)}
           required
         />
         <button type="submit">Post</button>
       </form>
 
       <div className="posts">
-        {posts.map((post) => (
-          <div className="post" key={post.id}>
-            <p className="post-content">{post.content}</p>
+        {threads.map((thread) => (
+          <div key={thread.id} className="post">
+            <p className="post-content">{thread.content}</p>
             <div className="replies">
-              {post.replies.map((reply, idx) => (
-                <div className="reply" key={idx}>↪ {reply}</div>
+              {thread.replies.map((r, idx) => (
+                <div key={idx} className="reply">↪ {r}</div>
               ))}
-              <ReplyForm postId={post.id} onReply={handleReply} />
+              <ReplyForm threadId={thread.id} onReply={handleReply} />
             </div>
           </div>
         ))}
@@ -79,19 +89,13 @@ const CommDiscussion = () => {
   );
 };
 
-const ReplyForm = ({
-  postId,
-  onReply,
-}: {
-  postId: number;
-  onReply: (id: number, reply: string) => void;
-}) => {
-  const [text, setText] = useState("");
+const ReplyForm = ({ threadId, onReply }: { threadId: number; onReply: (id: number, reply: string) => void }) => {
+  const [replyText, setReplyText] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onReply(postId, text);
-    setText("");
+    onReply(threadId, replyText);
+    setReplyText("");
   };
 
   return (
@@ -99,8 +103,8 @@ const ReplyForm = ({
       <input
         type="text"
         placeholder="Write a reply..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={replyText}
+        onChange={(e) => setReplyText(e.target.value)}
       />
       <button type="submit">Reply</button>
     </form>
