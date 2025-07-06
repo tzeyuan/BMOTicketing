@@ -79,7 +79,10 @@ const Home = () => {
           <li>aespa SYNK: Parallel - 8:00PM</li>
           <li>Final Lap: JJ20- 6:30PM</li>
           <li>
-            <Link to="/community" className="community-link">Community</Link>
+            <h3>
+              <Link to="/community" className="community-link">Community</Link>
+            </h3>
+            
           </li>
         </ul>
       </aside>

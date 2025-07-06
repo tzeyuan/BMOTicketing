@@ -5,12 +5,14 @@ import "../css/commDiscussion.css";
 interface Thread {
   id: number;
   content: string;
+  title: string;
   replies: { id: number; content: string }[];
 }
 
 const CommDiscussion = () => {
   const { id } = useParams();
   const [threads, setThreads] = useState<Thread[]>([]);
+  const [title, setTitle] = useState("");
   const [newThread, setNewThread] = useState("");
 
   // Fetch threads for this community
@@ -26,26 +28,53 @@ const CommDiscussion = () => {
   // Post new thread
   const handlePostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newThread.trim() || !id) return;
 
-    const res = await fetch("http://localhost:5000/api/threads", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        content: newThread,
-        communityId: Number(id),
-      }),
+    if (!title.trim() || !newThread.trim()) {
+      alert("Please fill in both title and content.");
+      return;
+    }
+
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Please log in to post a thread.");
+      return;
+    }
+
+    console.log("Posting thread:", {
+      communityId: Number(id),
+      userId: Number(userId),
+      title,
+      content: newThread,
     });
 
-    if (res.ok) {
+    try {
+      const res = await fetch("http://localhost:5000/api/threads", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          communityId: Number(id),
+          userId: Number(userId),
+          title,
+          content: newThread,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message || "Server error");
+      }
+
       const created = await res.json();
-      setThreads((prev) => [created, ...prev]);
+      setThreads([created, ...threads]);
+      setTitle("");
       setNewThread("");
-    } else {
+    } catch (err) {
       alert("Failed to post thread.");
+      console.error("Thread post error:", err);
     }
   };
 
+  // Post a reply
   const handleReply = async (threadId: number, replyText: string) => {
     if (!replyText.trim()) return;
 
@@ -74,6 +103,13 @@ const CommDiscussion = () => {
       <h2>Community Thread</h2>
 
       <form onSubmit={handlePostSubmit} className="post-form">
+        <input
+          type="text"
+          placeholder="Thread title"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
         <textarea
           placeholder="Ask a question or start a discussion..."
           value={newThread}
@@ -86,6 +122,7 @@ const CommDiscussion = () => {
       <div className="posts">
         {threads.map((thread) => (
           <div key={thread.id} className="post">
+            <h4>{thread.title}</h4>
             <p className="post-content">{thread.content}</p>
             <div className="replies">
               {thread.replies.map((reply) => (

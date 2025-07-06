@@ -7,17 +7,24 @@ import Community from "../models/Community";
 // Create a new thread in a community
 export const createThread = async (req: Request, res: Response) => {
   try {
-    const { communityId, content } = req.body;
+    console.log("Incoming thread data:", req.body);
+    const { communityId, userId, title, content } = req.body;
 
-    if (!communityId || !content) {
-      return res.status(400).json({ message: "communityId and content are required" });
+    if (!communityId || !userId || !title || !content) {
+      return res.status(400).json({ message: "Missing required fields" });
     }
 
-    const thread = await Thread.create({ communityId, content });
-    res.status(201).json({ ...thread.toJSON(), replies: [] });
+    const thread = await Thread.create({
+      communityId,
+      userId,
+      title,
+      content,
+    });
+
+    res.status(201).json(thread);
   } catch (err) {
     console.error("Failed to create thread:", err);
-    res.status(500).json({ message: "Server error", error: err });
+    res.status(500).json({ message: "Server error" });
   }
 };
 
