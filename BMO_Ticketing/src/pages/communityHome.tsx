@@ -16,6 +16,7 @@ interface Thread {
   content: string;
   createdAt: string;
   username: string;
+  replies: { id: number; content: string }[];
 }
 
 const CommunityHome = () => {
@@ -49,9 +50,31 @@ const CommunityHome = () => {
     }
   }, [userId]);
 
+  const handleReply = async (threadId: number, replyText: string) => {
+    if (!replyText.trim()) return;
+
+    const res = await fetch("http://localhost:5000/api/threads/reply", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ threadId, content: replyText }),
+    });
+
+    if (res.ok) {
+      const newReply = await res.json();
+      setThreads(prev =>
+        prev.map(thread =>
+          thread.id === threadId
+            ? { ...thread, replies: [...thread.replies, newReply] }
+            : thread
+        )
+      );
+    } else {
+      alert("Failed to post reply.");
+    }
+  };
+
   return (
     <div className="community-container">
-      {/* Sidebar */}
       <aside className="sidebar left-sidebar">
         <ul>
           <li><h3><Link to="/">Home</Link></h3></li>
@@ -66,22 +89,56 @@ const CommunityHome = () => {
         </ul>
       </aside>
 
-      {/* Main content */}
       <main className="community-main">
         <h2>All Joined Community Threads</h2>
         {threads.length === 0 ? (
           <p>No threads available.</p>
         ) : (
           threads.map(thread => (
-            <div key={thread.id} className="thread-box">
-              <h4>{thread.title}</h4>
-              <p>{thread.content}</p>
-              <small>By {thread.username} | {new Date(thread.createdAt).toLocaleString()}</small>
+            <div key={thread.id} className="thread-card">
+              <div className="thread-title">{thread.title}</div>
+              <div className="thread-content">{thread.content}</div>
+              <div className="thread-meta">By {thread.username} | {new Date(thread.createdAt).toLocaleString()}</div>
+
+              <div className="replies">
+                {thread.replies.map(reply => (
+                  <div key={reply.id} className="reply">↪ {reply.content}</div>
+                ))}
+                <ReplyForm postId={thread.id} onReply={handleReply} />
+              </div>
             </div>
           ))
         )}
       </main>
     </div>
+  );
+};
+
+const ReplyForm = ({
+  postId,
+  onReply,
+}: {
+  postId: number;
+  onReply: (id: number, reply: string) => void;
+}) => {
+  const [text, setText] = useState("");
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onReply(postId, text);
+    setText("");
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="reply-form">
+      <input
+        type="text"
+        placeholder="Write a reply..."
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+      />
+      <button type="submit">Reply</button>
+    </form>
   );
 };
 

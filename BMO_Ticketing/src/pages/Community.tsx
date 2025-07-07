@@ -119,7 +119,7 @@ const Community = () => {
       </aside>
 
       <main className="community-main">
-        <h2>Community Discussions</h2>
+        <h2>Event Communities</h2>
 
         {/* Search existing groups */}
         <input
