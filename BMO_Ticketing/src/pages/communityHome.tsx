@@ -53,16 +53,26 @@ const CommunityHome = () => {
   const handleReply = async (threadId: number, replyText: string) => {
     if (!replyText.trim()) return;
 
+    const userId = localStorage.getItem("userId");
+    if (!userId) {
+      alert("Please log in to reply.");
+      return;
+    }
+
     const res = await fetch("http://localhost:5000/api/threads/reply", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ threadId, content: replyText }),
+      body: JSON.stringify({
+        threadId,
+        content: replyText,
+        userId: Number(userId), // ✅ pass userId
+      }),
     });
 
     if (res.ok) {
       const newReply = await res.json();
-      setThreads(prev =>
-        prev.map(thread =>
+      setThreads((prev) =>
+        prev.map((thread) =>
           thread.id === threadId
             ? { ...thread, replies: [...thread.replies, newReply] }
             : thread

@@ -77,13 +77,13 @@ export const getThreadsByUserCommunities = async (req: Request, res: Response) =
 // Post reply to a thread
 export const addReply = async (req: Request, res: Response) => {
   try {
-    const { threadId, content } = req.body;
+    const { threadId, content, userId } = req.body;
 
-    if (!threadId || !content) {
-      return res.status(400).json({ message: "threadId and content are required" });
+    if (!threadId || !content || !userId) {
+      return res.status(400).json({ message: "threadId, content, and userId are required" });
     }
 
-    const reply = await Reply.create({ threadId, content });
+    const reply = await Reply.create({ threadId, content, userId });
     res.status(201).json(reply);
   } catch (err) {
     console.error("Failed to post reply:", err);
