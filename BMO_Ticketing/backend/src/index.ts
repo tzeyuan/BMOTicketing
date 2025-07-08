@@ -12,12 +12,35 @@ import userRoutes from "./routes/userRoutes";
 import threadRoutes from "./routes/threadRoutes";
 
 // Model imports (to register with Sequelize)
-import "./models/User";
-import "./models/Community";
-import "./models/JoinedCommunity";
-import "./models/Ticket"; 
-import "./models/Event";
-import "./models/Thread";
+import User from "./models/User";
+import Community from "./models/Community";
+import JoinedCommunity from "./models/JoinedCommunity";
+import Ticket from "./models/Ticket";
+import Event from "./models/Event";
+import Thread from "./models/Thread";
+import Reply from "./models/Reply";
+
+//Define associations
+Thread.belongsTo(User, { foreignKey: "userId", as: "user" });
+Thread.hasMany(Reply, { foreignKey: "threadId", as: "replies" });
+
+Reply.belongsTo(Thread, { foreignKey: "threadId" });
+Reply.belongsTo(User, { foreignKey: "userId", as: "user" });
+
+JoinedCommunity.belongsTo(User, { foreignKey: "userId" });
+JoinedCommunity.belongsTo(Community, { foreignKey: "communityId" });
+
+// Many-to-Many association between User and Community through JoinedCommunity
+User.belongsToMany(Community, {
+  through: JoinedCommunity,
+  foreignKey: "userId",
+  as: "joinedCommunities",
+});
+Community.belongsToMany(User, {
+  through: JoinedCommunity,
+  foreignKey: "communityId",
+  as: "members",
+});
 
 // Initialize dotenv
 dotenv.config();
