@@ -13,6 +13,11 @@ Reply.init(
       type: DataTypes.TEXT,
       allowNull: false,
     },
+    userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    }
+
   },
   {
     sequelize,
