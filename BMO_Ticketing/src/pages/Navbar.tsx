@@ -15,6 +15,7 @@ const Navbar = () => {
       </Link>
 
       <nav className="navbar-links">
+        <Link to="/community">Community</Link>
         <Link to="/merchandise">Merchandise</Link>
         <Link to="/aboutus">About Us</Link>
 
