@@ -15,8 +15,8 @@ interface Thread {
   title: string;
   content: string;
   createdAt: string;
-  username: string;
-  replies: { id: number; content: string }[];
+  user: { username: string };
+  replies: { id: number; content: string; user: { username: string } }[];
 }
 
 const CommunityHome = () => {
@@ -94,17 +94,18 @@ const CommunityHome = () => {
         {threads.length === 0 ? (
           <p>No threads available.</p>
         ) : (
-          threads.map(thread => (
-            <div key={thread.id} className="thread-card">
-              <div className="thread-title">{thread.title}</div>
-              <div className="thread-content">{thread.content}</div>
-              <div className="thread-meta">By {thread.username} | {new Date(thread.createdAt).toLocaleString()}</div>
+          threads.map((thread) => (
+            <div key={thread.id} className="thread-box">
+              <h4>{thread.title}</h4>
+              <p>{thread.content}</p>
+              <small>By {thread.user?.username} | {new Date(thread.createdAt).toLocaleString()}</small>
 
               <div className="replies">
-                {thread.replies.map(reply => (
-                  <div key={reply.id} className="reply">↪ {reply.content}</div>
+                {thread.replies.map((reply) => (
+                  <div key={reply.id} className="reply">
+                    ↪ <strong>{reply.user?.username}:</strong> {reply.content}
+                  </div>
                 ))}
-                <ReplyForm postId={thread.id} onReply={handleReply} />
               </div>
             </div>
           ))
