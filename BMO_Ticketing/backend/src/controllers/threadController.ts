@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import Thread from "../models/Thread";
 import Reply from "../models/Reply";
 import Community from "../models/Community";
+import User from "../models/User";
 
 
 // Create a new thread in a community
@@ -35,7 +36,10 @@ export const getThreadsByCommunity = async (req: Request, res: Response) => {
 
     const threads = await Thread.findAll({
       where: { communityId },
-      include: [{ model: Reply, as: "replies" }],
+      include: [
+        { model: Reply, as: "replies", include: [{ model: User, as: "user", attributes: ["username"] }] },
+        { model: User, as: "user", attributes: ["username"] }
+      ],
       order: [["createdAt", "DESC"]],
     });
 
