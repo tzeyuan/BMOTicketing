@@ -14,6 +14,8 @@ import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import CommDiscussion from "./pages/CommDiscussion";
 import CommunityHome from "./pages/communityHome";
+import MerchDetails from "./pages/MerchDetails";
+import Cart from "./pages/Cart";
 
 //Admin Panel
 import AdminPanel from "./admin/AdminPanel";
@@ -36,7 +38,9 @@ function App() {
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
                     <Route path="/communityHome" element={<CommunityHome />} />
-                    <Route path="/admin" element={<AdminPanel />} />     
+                    <Route path="/admin" element={<AdminPanel />} />    
+                    <Route path="/merch/:id" element={<MerchDetails />} />
+                    <Route path="/cart" element={<Cart />} /> 
                 </Routes>
             </Layout>
         </Router>
