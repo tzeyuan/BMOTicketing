@@ -65,7 +65,7 @@ const CommunityHome = () => {
       body: JSON.stringify({
         threadId,
         content: replyText,
-        userId: Number(userId), // ✅ pass userId
+        userId: Number(userId), 
       }),
     });
 

@@ -7,7 +7,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Event from "./pages/Event";
 import TicketDetails from "./pages/TicketDetails";
-import Merchandise from "./pages/Merchandise";
+import Merchandise from "./pages/MerchHome";
 import Community from "./pages/Community";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/Profile";
