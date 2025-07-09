@@ -1,0 +1,56 @@
+.merch-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  padding: 40px;
+  background-color: #ffffff;
+  font-family: Arial, sans-serif;
+}
+
+.merch-details img {
+  width: 350px;
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  border: 1px solid #ddd;
+}
+
+.details-info {
+  flex: 1;
+  max-width: 600px;
+}
+
+.details-info h2 {
+  color: #63bda4;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.details-info p {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.details-info strong {
+  font-size: 18px;
+  display: inline-block;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.details-info button {
+  background-color: #63bda4;
+  color: white;
+  padding: 10px 16px;
+  font-size: 14px;
+  border: none;
+  margin-right: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.details-info button:hover {
+  background-color: #4ea58b;
+}
