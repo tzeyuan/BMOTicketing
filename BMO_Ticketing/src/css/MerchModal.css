@@ -1,4 +1,5 @@
 /* Shared modal styling for Create & Edit Merchandise */
+/* Modal overlay */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -12,58 +13,73 @@
   z-index: 1000;
 }
 
+/* Modal content */
 .modal-content {
   background-color: white;
-  padding: 30px 40px;
-  border-radius: 10px;
-  width: 450px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  padding: 30px;
+  border-radius: 12px;
+  width: 480px;
+  max-width: 90%;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
   position: relative;
+  font-family: Arial, sans-serif;
 }
 
-.modal-content h2 {
-  margin-bottom: 20px;
-  color: #333;
-  font-size: 20px;
+.modal-content h2,
+.modal-content h3 {
   text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
 .modal-content input,
 .modal-content textarea {
   width: 100%;
   padding: 10px;
-  margin-bottom: 12px;
   border: 1px solid #ccc;
   border-radius: 6px;
   font-size: 14px;
 }
 
 .modal-content textarea {
-  resize: vertical;
   min-height: 80px;
+  resize: vertical;
 }
 
-.modal-content .button-group {
+/* Button group */
+.modal-actions,
+.button-group {
   display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-  margin-top: 10px;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 18px;
 }
 
 .modal-content button {
-  padding: 8px 16px;
+  flex: 1;
+  padding: 10px;
   border: none;
   border-radius: 6px;
-  cursor: pointer;
+  font-size: 14px;
   font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.modal-content .submit-btn,
+.modal-content button[type="submit"] {
+  background-color: #63bda4;
+  color: white;
 }
 
 .modal-content .cancel-btn {
-  background-color: #ccc;
+  background-color: #f0f0f0;
   color: #333;
-}
-
-.modal-content .submit-btn {
-  background-color: #63bda4;
-  color: white;
 }

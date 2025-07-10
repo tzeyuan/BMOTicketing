@@ -43,35 +43,41 @@ const CreateMerchModal = ({ onClose, onCreate }: CreateMerchModalProps) => {
   return (
     <div className="modal-overlay">
       <div className="modal-content">
-        <h3>Create New Product</h3>
+        <h3>Add New Product</h3>
         <form onSubmit={handleSubmit} className="modal-form">
-          <input
-            type="text"
-            placeholder="Product Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-          />
-          <textarea
-            placeholder="Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
-          <input
-            type="number"
-            placeholder="Price"
-            value={price}
-            onChange={(e) => setPrice(parseFloat(e.target.value))}
-            required
-          />
-          <input type="file" accept="image/*" onChange={handleImageChange} required />
-          <div className="modal-actions">
-            <button type="submit">Create</button>
-            <button type="button" onClick={onClose} className="cancel-btn">
-              Cancel
-            </button>
-          </div>
+            <input
+                type="text"
+                placeholder="Product Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+            />
+            <textarea
+                placeholder="Description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+            />
+            <input
+                type="number"
+                placeholder="Price"
+                value={price}
+                onChange={(e) => setPrice(parseFloat(e.target.value))}
+                required
+            />
+            <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                required
+            />
+
+            <div className="modal-actions">
+                <button type="submit">Create</button>
+                <button type="button" onClick={onClose} className="cancel-btn">
+                Cancel
+                </button>
+            </div>
         </form>
       </div>
     </div>
