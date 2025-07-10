@@ -20,6 +20,8 @@ import Ticket from "./models/Ticket";
 import Event from "./models/Event";
 import Thread from "./models/Thread";
 import Reply from "./models/Reply";
+import Merchandise from  "./models/Merchandise"; 
+
 
 //Define associations
 Thread.belongsTo(User, { foreignKey: "userId", as: "user" });
