@@ -7,7 +7,7 @@ Merchandise.init({
   name: { type: DataTypes.STRING, allowNull: false },
   description: { type: DataTypes.TEXT, allowNull: false },
   price: { type: DataTypes.FLOAT, allowNull: false },
-  image: { type: DataTypes.TEXT, allowNull: false },
+  image: { type: DataTypes.TEXT('long'), allowNull: false },
 }, {
   sequelize,
   modelName: "Merchandise",

@@ -1,13 +1,54 @@
 import { Request, Response } from "express";
 import Merchandise from "../models/Merchandise";
 
-export const getAllMerch = async (req: Request, res: Response) => {
-  const merch = await Merchandise.findAll();
-  res.json(merch);
+// Create new product
+export const createProduct = async (req: Request, res: Response) => {
+  try {
+    const { name, image, description } = req.body;
+    const product = await Merchandise.create({ name, image, description });
+    res.status(201).json(product);
+  } catch (err) {
+    console.error("Create error:", err);
+    res.status(500).json({ message: "Failed to create product" });
+  }
 };
 
-export const getMerchById = async (req: Request, res: Response) => {
-  const merch = await Merchandise.findByPk(req.params.id);
-  if (!merch) return res.status(404).json({ message: "Not found" });
-  res.json(merch);
+// Get all products
+export const getProducts = async (_req: Request, res: Response) => {
+  try {
+    const products = await Merchandise.findAll({ order: [["createdAt", "DESC"]] });
+    res.json(products);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch products" });
+  }
+};
+
+// Update product
+export const updateProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { name, image, description } = req.body;
+
+    const product = await Merchandise.findByPk(id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    await product.update({ name, image, description });
+    res.json(product);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to update product" });
+  }
+};
+
+// Delete product
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const product = await Merchandise.findByPk(id);
+    if (!product) return res.status(404).json({ message: "Product not found" });
+
+    await product.destroy();
+    res.json({ message: "Product deleted" });
+  } catch (err) {
+    res.status(500).json({ message: "Failed to delete product" });
+  }
 };

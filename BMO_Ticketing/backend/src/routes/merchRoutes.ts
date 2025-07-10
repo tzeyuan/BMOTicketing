@@ -1,9 +1,16 @@
 import express from "express";
-import { getAllMerch, getMerchById } from "../controllers/merchController";
+import {
+  createProduct,
+  getProducts,
+  updateProduct,
+  deleteProduct,
+} from "../controllers/merchController";
 
 const router = express.Router();
 
-router.get("/", getAllMerch);
-router.get("/:id", getMerchById);
+router.post("/", createProduct);
+router.get("/", getProducts);
+router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
 
 export default router;
