@@ -1,49 +1,163 @@
-.merch-home {
-  padding: 30px;
-  background-color: #f9f9f9;
+.merch-container {
+  display: flex;
+  min-height: 100vh;
   font-family: Arial, sans-serif;
+  background-color: #f7f7f7;
 }
 
-.merch-home h2 {
+.left-sidebar {
+  width: 200px;
+  background-color: #fff;
+  padding: 20px;
+  box-shadow: 2px 0 4px rgba(0, 0, 0, 0.1);
+}
+
+.left-sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.left-sidebar li {
+  margin: 10px 0;
+}
+
+.left-sidebar a {
   color: #63bda4;
-  margin-bottom: 20px;
-  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
 }
 
-.product-grid {
+.left-sidebar a:hover {
+  text-decoration: underline;
+}
+
+.merch-main {
+  flex: 1;
+  padding: 30px;
+  background-color: #fff;
+}
+
+.merch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.merch-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 20px;
+  margin-top: 20px;
 }
 
-.product-card {
-  background-color: #fff;
-  border: 1px solid #ddd;
+.merch-card {
+  background-color: #ffffff;
   border-radius: 8px;
-  overflow: hidden;
+  padding: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  cursor: pointer;
   transition: transform 0.2s ease;
 }
 
-.product-card:hover {
-  transform: scale(1.02);
+.merch-card:hover {
+  transform: translateY(-4px);
 }
 
-.product-card img {
+.merch-card img {
   width: 100%;
-  height: 240px;
+  height: 180px;
   object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 10px;
 }
 
-.product-card h3 {
+.merch-card h4 {
   font-size: 16px;
   color: #333;
-  margin: 10px 0 4px;
+  margin-bottom: 8px;
 }
 
-.product-card p {
-  color: #555;
+.merch-card p {
+  font-size: 14px;
+  color: #666;
   margin-bottom: 12px;
+}
+
+.merch-card button {
+  margin: 4px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.delete-btn {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.edit-btn {
+  background-color: #f1c40f;
+  color: white;
+}
+
+.details-btn {
+  background-color: #63bda4;
+  color: white;
+}
+
+.create-btn {
+  background-color: #63bda4;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
+  width: 400px;
+  max-width: 90%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h3 {
+  margin-bottom: 16px;
+  color: #333;
+}
+
+.modal-content input,
+.modal-content textarea {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.modal-content button {
+  background-color: #63bda4;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  margin-right: 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
