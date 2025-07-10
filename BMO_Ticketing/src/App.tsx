@@ -7,13 +7,13 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Event from "./pages/Event";
 import TicketDetails from "./pages/TicketDetails";
-import Merchandise from "./pages/MerchHome";
+import MerchHome from "./pages/MerchHome";
 import Community from "./pages/Community";
 import AboutUs from "./pages/AboutUs";
 import Profile from "./pages/Profile";
 import Payment from "./pages/Payment";
 import CommDiscussion from "./pages/CommDiscussion";
-import CommunityHome from "./pages/communityHome";
+import CommunityHome from "./pages/CommunityHome";
 import MerchDetails from "./pages/MerchDetails";
 import Cart from "./pages/Cart";
 
@@ -31,7 +31,7 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/events" element={<Event />} />
                     <Route path="/ticket/:id" element={<TicketDetails />} />
-                    <Route path="/merchandise" element={<Merchandise />} />
+                    <Route path="/merchHome" element={<MerchHome />} />
                     <Route path="/community" element={<Community />} />
                     <Route path="/about" element={<AboutUs />} />
                     <Route path="/profile" element={<Profile />} />
