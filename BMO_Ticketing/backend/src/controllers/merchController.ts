@@ -12,6 +12,23 @@ export const getProducts = async (_req: Request, res: Response) => {
   }
 };
 
+// Get single product by ID
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const product = await Merchandise.findByPk(id);
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found." });
+    }
+
+    res.json(product);
+  } catch (err) {
+    console.error("Fetch single product error:", err);
+    res.status(500).json({ message: "Failed to fetch product." });
+  }
+};
+
 // Create new product (admin only)
 export const createProduct = async (req: Request, res: Response) => {
   try {
