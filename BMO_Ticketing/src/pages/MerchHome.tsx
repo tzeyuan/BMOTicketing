@@ -102,7 +102,7 @@ const MerchHome = () => {
         </form>
       )}
 
-      <div className="product-grid">
+      <div className="merch-grid">
         {products.map((product) => (
           <div key={product.id} className="product-card">
             <img src={product.image} alt={product.name} />

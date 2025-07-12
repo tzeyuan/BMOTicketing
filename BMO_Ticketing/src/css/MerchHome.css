@@ -5,6 +5,7 @@
   background-color: #f7f7f7;
 }
 
+/* Sidebar */
 .left-sidebar {
   width: 200px;
   background-color: #fff;
@@ -31,6 +32,7 @@
   text-decoration: underline;
 }
 
+/* Main Content */
 .merch-main {
   flex: 1;
   padding: 30px;
@@ -43,13 +45,26 @@
   align-items: center;
 }
 
+.create-btn {
+  background-color: #63bda4;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* Product Grid Layout */
 .merch-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 20px;
   margin-top: 20px;
 }
 
+/* Product Card */
 .merch-card {
   background-color: #ffffff;
   border-radius: 8px;
@@ -91,8 +106,8 @@
   cursor: pointer;
 }
 
-.delete-btn {
-  background-color: #e74c3c;
+.details-btn {
+  background-color: #63bda4;
   color: white;
 }
 
@@ -101,21 +116,12 @@
   color: white;
 }
 
-.details-btn {
-  background-color: #63bda4;
+.delete-btn {
+  background-color: #e74c3c;
   color: white;
 }
 
-.create-btn {
-  background-color: #63bda4;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 4px;
-  font-weight: bold;
-  border: none;
-  cursor: pointer;
-}
-
+/* Modal */
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -126,6 +132,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1000;
 }
 
 .modal-content {
