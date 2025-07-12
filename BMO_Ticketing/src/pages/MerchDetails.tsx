@@ -49,7 +49,7 @@ const MerchDetails = () => {
           <button onClick={handleAddToCart}>Add to Cart</button>
         ) : (
           <>
-            <button onClick={() => navigate("/Cart")}>View Cart</button>
+            <button onClick={() => navigate("/cart")}>View Cart</button>
             <button onClick={() => navigate("/MerchHome")}>Continue Shopping</button>
           </>
         )}
