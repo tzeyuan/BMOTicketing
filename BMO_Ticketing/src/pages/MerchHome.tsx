@@ -20,6 +20,13 @@ const MerchHome = () => {
     price: "",
     image: "",
   });
+  const [editingProductId, setEditingProductId] = useState<number | null>(null);
+  const [editData, setEditData] = useState({
+    name: "",
+    description: "",
+    price: "",
+    image: "",
+  });
 
   const navigate = useNavigate();
 
@@ -37,6 +44,14 @@ const MerchHome = () => {
     if (!file) return;
     const reader = new FileReader();
     reader.onloadend = () => setFormData({ ...formData, image: reader.result as string });
+    reader.readAsDataURL(file);
+  };
+
+  const handleEditImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onloadend = () => setEditData({ ...editData, image: reader.result as string });
     reader.readAsDataURL(file);
   };
 
@@ -63,6 +78,26 @@ const MerchHome = () => {
     if (!confirm) return;
     const res = await fetch(`http://localhost:5000/api/merchandise/${id}`, { method: "DELETE" });
     if (res.ok) setProducts(products.filter((p) => p.id !== id));
+  };
+
+  const handleEditSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!editingProductId) return;
+
+    const res = await fetch(`http://localhost:5000/api/merchandise/${editingProductId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...editData,
+        price: parseFloat(editData.price),
+      }),
+    });
+
+    if (res.ok) {
+      const updated = await res.json();
+      setProducts(products.map(p => p.id === editingProductId ? updated : p));
+      setEditingProductId(null);
+    }
   };
 
   return (
@@ -105,12 +140,54 @@ const MerchHome = () => {
       <div className="merch-grid">
         {products.map((product) => (
           <div key={product.id} className="product-card">
-            <img src={product.image} alt={product.name} />
-            <h4>{product.name}</h4>
-            <p>RM {product.price.toFixed(2)}</p>
-            <button onClick={() => navigate(`/merch/${product.id}`)}>View</button>
-            {isAdmin && (
-              <button className="delete-btn" onClick={() => handleDelete(product.id)}>Delete</button>
+            {editingProductId === product.id ? (
+              <form onSubmit={handleEditSubmit}>
+                <input
+                  type="text"
+                  value={editData.name}
+                  onChange={(e) => setEditData({ ...editData, name: e.target.value })}
+                  required
+                />
+                <textarea
+                  value={editData.description}
+                  onChange={(e) => setEditData({ ...editData, description: e.target.value })}
+                  required
+                />
+                <input
+                  type="number"
+                  value={editData.price}
+                  onChange={(e) => setEditData({ ...editData, price: e.target.value })}
+                  required
+                />
+                <input type="file" accept="image/*" onChange={handleEditImageUpload} />
+                <div style={{ marginTop: "10px" }}>
+                  <button type="submit">Save</button>
+                  <button type="button" onClick={() => setEditingProductId(null)} className="cancel-btn">
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            ) : (
+              <>
+                <img src={product.image} alt={product.name} />
+                <h4>{product.name}</h4>
+                <p>RM {product.price.toFixed(2)}</p>
+                <button onClick={() => navigate(`/merch/${product.id}`)}>View</button>
+                {isAdmin && (
+                  <>
+                    <button className="edit-btn" onClick={() => {
+                      setEditingProductId(product.id);
+                      setEditData({
+                        name: product.name,
+                        description: product.description,
+                        price: product.price.toString(),
+                        image: product.image,
+                      });
+                    }}>Edit</button>
+                    <button className="delete-btn" onClick={() => handleDelete(product.id)}>Delete</button>
+                  </>
+                )}
+              </>
             )}
           </div>
         ))}
