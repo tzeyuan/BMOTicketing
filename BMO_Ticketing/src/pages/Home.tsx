@@ -29,13 +29,36 @@ const Home = () => {
     <div className="home-container">
       {/* Left Sidebar */}
       <aside className="sidebar left-sidebar">
-        <h2>Event Category</h2>
-        <ul>
-          <li>K-POP</li>
-          <li>Mandarin</li>
-          <li>J-POP</li>
-          <li>Musical</li>
-        </ul>
+        <h3>News</h3>
+          <ul className="news-list">
+            <li>
+              <a
+                href="https://www.thestar.com.my/lifestyle/entertainment/2025/07/13/justin-bieber-unveils-surprise-7th-album-just-hours-after-teaser"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Justin Bieber unveils surprise 7th album just hours after teaser
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.travelandleisureasia.com/my/news/riize-set-to-bring-their-riizing-loud-tour-to-malaysia-with-a-one-night-only-concert/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                RIIZE Is Bringing Their ‘RIIZING LOUD’ Tour To Malaysia
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://says.com/my/entertainment/exo-d-o-reveals-ticketing-details-for-kl-concert"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Ticketing Details For D.O.'s 2025 KL Concert Are Out. Here's What Your Pass Includes
+              </a>
+            </li>
+          </ul>
       </aside>
 
       {/* Main Content */}
