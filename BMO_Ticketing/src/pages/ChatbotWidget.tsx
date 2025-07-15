@@ -1,4 +1,3 @@
-// src/components/ChatbotWidget.tsx
 import { useState } from "react";
 import "../css/ChatbotWidget.css";
 

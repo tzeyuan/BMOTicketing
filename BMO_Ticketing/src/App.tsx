@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./pages/Layout";
+import ChatbotWidget from "./pages/ChatbotWidget";
 
 //User Portal
 import Home from "./pages/Home";
@@ -26,6 +27,7 @@ function App() {
     return (
         <Router>
             <Layout>
+                <ChatbotWidget />
                 <Routes>
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
