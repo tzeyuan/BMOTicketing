@@ -17,7 +17,6 @@ import CommDiscussion from "./pages/CommDiscussion";
 import CommunityHome from "./pages/CommunityHome";
 import MerchDetails from "./pages/MerchDetails";
 import Cart from "./pages/Cart";
-import Chatbot from "./pages/ChatBot";
 
 //Admin Panel
 import AdminPanel from "./admin/AdminPanel";
@@ -44,7 +43,6 @@ function App() {
                     <Route path="/admin" element={<AdminPanel />} />    
                     <Route path="/merch/:id" element={<MerchDetails />} />
                     <Route path="/cart" element={<Cart />} /> 
-                    <Route path="/chatbot" element={<Chatbot />} />
                 </Routes>
             </Layout>
         </Router>
