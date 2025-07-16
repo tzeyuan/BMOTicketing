@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom"; // 👈 added
+import { useNavigate } from "react-router-dom"; 
 import "../css/AdminPanel.css";
 
 interface Event {
@@ -18,6 +18,7 @@ interface User {
   id: number;
   username: string;
   email: string;
+  isAdmin: boolean;
 }
 
 const AdminPanel = () => {
@@ -179,11 +180,24 @@ const AdminPanel = () => {
         </div>
 
         <h3>Registered Users</h3>
-        <ul className="user-list">
-          {users.map(user => (
-            <li key={user.id}>{user.username} - {user.email}</li>
-          ))}
-        </ul>
+        <table className="user-table">
+          <thead>
+            <tr>
+              <th>Username</th>
+              <th>Email</th>
+              <th>Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
+              <tr key={user.id}>
+                <td>{user.username}</td>
+                <td>{user.email}</td>
+                <td>{user.isAdmin ? "Admin" : "User"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </main>
     </div>
   );
