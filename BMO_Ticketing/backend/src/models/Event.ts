@@ -12,6 +12,8 @@ Event.init(
     date: { type: DataTypes.STRING, allowNull: false },
     image: { type: DataTypes.TEXT('long'), allowNull: false },
     description: { type: DataTypes.TEXT, allowNull: false },
+
+    // Ticket types as array of { name: string, sold: number }
     ticketTypes: {
       type: DataTypes.JSON,
       allowNull: false,
@@ -19,6 +21,13 @@ Event.init(
         const raw = this.getDataValue("ticketTypes");
         return Array.isArray(raw) ? raw : [];
       },
+      set(value: any) {
+        // Accepts array of strings or array of { name, sold }
+        const normalized = value.map((t: any) =>
+          typeof t === "string" ? { name: t, sold: 0 } : t
+        );
+        this.setDataValue("ticketTypes", normalized);
+      }
     },
   },
   {
