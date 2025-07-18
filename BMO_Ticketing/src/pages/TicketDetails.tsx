@@ -12,6 +12,7 @@ interface EventData {
   image: string;
   description: string;
   ticketTypes: string[];
+  seatingPlan?: string; 
 }
 
 const TicketDetails = () => {
@@ -21,7 +22,6 @@ const TicketDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState("ticket");
-  const [selectedTicket, setSelectedTicket] = useState("");
 
   useEffect(() => {
     if (id) {
@@ -41,26 +41,12 @@ const TicketDetails = () => {
     }
   }, [id]);
 
-  const handleBuy = () => {
-    if (!selectedTicket || !event) return;
-
-    const paymentData = {
-      event: event.title,
-      date: event.date,
-      ticketType: selectedTicket,
-    };
-
-    localStorage.setItem("paymentData", JSON.stringify(paymentData));
-    navigate("/payment", { state: paymentData });
+  const handleBuyNow = () => {
+    navigate(`/waiting-room/${id}`);
   };
 
-  if (loading) {
-    return <div className="ticket-details"><h2>Loading event...</h2></div>;
-  }
-
-  if (error || !event) {
-    return <div className="ticket-details"><h2>{error || "Event not found"}</h2></div>;
-  }
+  if (loading) return <div className="ticket-details"><h2>Loading event...</h2></div>;
+  if (error || !event) return <div className="ticket-details"><h2>{error || "Event not found"}</h2></div>;
 
   return (
     <div className="ticket-details">
@@ -84,11 +70,7 @@ const TicketDetails = () => {
       <div className="tab-content">
         {activeTab === "ticket" && (
           <div className="tab-ticket">
-            <img
-              src={event.image}
-              alt={event.title}
-              className="event-img"
-            />
+            <img src={event.image} alt={event.title} className="event-img" />
             <div className="ticket-info">
               <h2>{event.title}</h2>
               <p><strong>Artist:</strong> {event.artist}</p>
@@ -96,23 +78,8 @@ const TicketDetails = () => {
               <p><strong>Venue:</strong> {event.venue}</p>
               <p><strong>Price From:</strong> {event.price}</p>
 
-              <label>Select Ticket Type:</label>
-              <select
-                value={selectedTicket}
-                onChange={(e) => setSelectedTicket(e.target.value)}
-              >
-                <option value="">-- Choose Ticket --</option>
-                {event.ticketTypes.map((type, idx) => (
-                  <option key={idx} value={type}>{type}</option>
-                ))}
-              </select>
-
-              <button
-                className="buy-button"
-                onClick={handleBuy}
-                disabled={!selectedTicket}
-              >
-                {selectedTicket ? `Buy ${selectedTicket}` : "Select Ticket"}
+              <button className="buy-button" onClick={handleBuyNow}>
+                Buy Now
               </button>
             </div>
           </div>
@@ -124,11 +91,11 @@ const TicketDetails = () => {
             <p>{event.description}</p>
 
             <h3>Seating Plan</h3>
-            <img
-              src="/bukitjalil_seatingplan.png"
-              alt="Seating Plan"
-              className="seating-plan"
-            />
+            {event.seatingPlan ? (
+              <img src={event.seatingPlan} alt="Seating Plan" className="seating-plan" />
+            ) : (
+              <img src="/default_seating_plan.png" alt="Default Seating" className="seating-plan" />
+            )}
 
             <h3>Terms & Conditions</h3>
             <ul>
