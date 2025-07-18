@@ -2,33 +2,39 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "../css/Payment.css";
 
+interface TicketItem {
+  name: string;
+  quantity: number;
+  price: number;
+}
+
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Fallback from localStorage in case location.state is missing
   const localData = localStorage.getItem("paymentData");
   const parsedLocal = localData ? JSON.parse(localData) : {};
 
   const event = location.state?.event || parsedLocal.event;
   const date = location.state?.date || parsedLocal.date;
-  const ticketType = location.state?.ticketType || parsedLocal.ticketType;
+  const selectedTickets: TicketItem[] = location.state?.tickets || parsedLocal.tickets || [];
   const userId = localStorage.getItem("userId");
 
   const [cardNumber, setCardNumber] = useState("");
   const [cvv, setCvv] = useState("");
   const [expiry, setExpiry] = useState("");
 
+  const totalAmount = selectedTickets.reduce((sum, t) => sum + t.price * t.quantity, 0);
+
   useEffect(() => {
-    console.log("Payment Page Loaded with:", { event, date, ticketType, userId });
-  }, [event, date, ticketType, userId]);
+    console.log("Payment Page Loaded:", { event, date, selectedTickets, userId });
+  }, [event, date, selectedTickets, userId]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!userId || !event || !date || !ticketType) {
-      console.error("Missing values:", { userId, event, date, ticketType });
-      alert("Missing required information.");
+    if (!userId || !event || !date || !selectedTickets.length) {
+      alert("Missing required payment data.");
       return;
     }
 
@@ -36,8 +42,11 @@ const Payment = () => {
       userId,
       event,
       date,
-      ticketType,
-      qrCode: "/sampleQR.png", // static for now
+      ticketType: selectedTickets.map(t => ({
+        name: t.name,
+        quantity: t.quantity
+      })),
+      qrCode: "/sampleQR.png"
     };
 
     try {
@@ -49,7 +58,7 @@ const Payment = () => {
 
       if (res.ok) {
         alert("Payment successful. Ticket saved!");
-        localStorage.removeItem("paymentData"); // optional cleanup
+        localStorage.removeItem("paymentData");
         navigate("/profile");
       } else {
         alert("Failed to save ticket.");
@@ -62,8 +71,28 @@ const Payment = () => {
   return (
     <div className="payment-page">
       <div className="payment-box">
-        <h2>Payment Information</h2>
-        <form onSubmit={handleSubmit}>
+        <h2>Confirm Your Selection</h2>
+        <p>Please check your selection and click 'Confirm & Checkout'</p>
+
+        <div className="ticket-summary">
+          {selectedTickets.map((t, index) => (
+            <div key={index} className="ticket-item">
+              <img src="/sampleQR.png" alt="event" />
+              <div>
+                <strong>{event} ({t.name})</strong>
+                <p>Date: {date}</p>
+                <p>Quantity: {t.quantity}</p>
+              </div>
+              <div>MYR {(t.price * t.quantity).toFixed(2)}</div>
+            </div>
+          ))}
+          <hr />
+          <div className="total">
+            <strong>Total Amount: </strong>MYR {totalAmount.toFixed(2)}
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit} className="card-form">
           <label htmlFor="cardNumber">Card Number</label>
           <input
             id="cardNumber"
