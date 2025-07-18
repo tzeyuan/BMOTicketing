@@ -1,0 +1,46 @@
+.waiting-room {
+  max-width: 600px;
+  margin: 60px auto;
+  padding: 30px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.queue-bar {
+  margin: 30px 0;
+  height: 30px;
+  width: 100%;
+  background: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.queue-bar .progress {
+  height: 100%;
+  width: 100%;
+  background: linear-gradient(to right, #63bda4, #4aa88c);
+  animation: fillBar 5s linear forwards;
+}
+
+@keyframes fillBar {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.queue-info {
+  margin-top: 20px;
+  font-size: 15px;
+  color: #444;
+}
+
+.note {
+  margin-top: 30px;
+  font-size: 14px;
+  color: #777;
+}
