@@ -30,11 +30,28 @@ export const createTicket = async (req: Request, res: Response): Promise<Respons
       });
 
       matchedEvent.ticketTypes = updatedTickets;
-      await matchedEvent.save(); 
+      await matchedEvent.save();  
     }
 
     return res.status(201).json(ticket);
   } catch (error) {
     return res.status(500).json({ message: "Failed to save ticket", error });
+  }
+};
+
+//get all tickets associated to user
+export const getUserTickets = async (req: Request, res: Response): Promise<Response> => {
+  try {
+    const { userId } = req.params;
+
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const tickets = await Ticket.findAll({ where: { userId } });
+
+    return res.status(200).json(tickets);
+  } catch (error) {
+    return res.status(500).json({ message: "Failed to retrieve tickets", error });
   }
 };
