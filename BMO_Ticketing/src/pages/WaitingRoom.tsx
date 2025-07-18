@@ -1,31 +1,35 @@
-// WaitingRoom.tsx
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import "../css/WaitingRoom.css";
 
 const WaitingRoom = () => {
   const navigate = useNavigate();
-  const [timeLeft, setTimeLeft] = useState(Math.floor(Math.random() * 30) + 30); // 30–60 sec
+  const location = useLocation();
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 1) {
-          clearInterval(timer);
-          navigate("/ticket/:id"); // Navigate to the ticket selection page
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-    return () => clearInterval(timer);
-  }, [navigate]);
+    // Simulate wait time (e.g., 5 seconds)
+    const timer = setTimeout(() => {
+      navigate("/select-ticket", { state: location.state });
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [navigate, location.state]);
 
   return (
     <div className="waiting-room">
-      <h2>You are now in line</h2>
-      <p>Please wait for your turn to buy tickets.</p>
-      <p>Estimated wait time: {timeLeft} seconds</p>
-      <progress value={60 - timeLeft} max="60"></progress>
+      <h1>You are now in line</h1>
+      <p>When it is your turn, you will have 10 minutes to enter the ticket selection page.</p>
+
+      <div className="queue-bar">
+        <div className="progress"></div>
+      </div>
+
+      <div className="queue-info">
+        <p>Estimated wait time: <strong>Less than a minute</strong></p>
+        <p>Status last updated: {new Date().toLocaleTimeString()}</p>
+      </div>
+
+      <p className="note">Please do not refresh or close the page.</p>
     </div>
   );
 };
