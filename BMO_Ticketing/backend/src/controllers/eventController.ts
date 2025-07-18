@@ -104,3 +104,25 @@ export const deleteEvent = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Failed to delete event", error: err });
   }
 };
+
+// Get ticket sales count
+export const updateTicketSales = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const { ticketName, quantity } = req.body;
+
+    const event = await Event.findByPk(id);
+    if (!event) return res.status(404).json({ message: "Event not found." });
+
+    const tickets = event.ticketTypes.map((t: any) =>
+      t.name === ticketName ? { ...t, sold: (t.sold || 0) + quantity } : t
+    );
+
+    await event.update({ ticketTypes: tickets });
+
+    res.json({ message: "Ticket sale updated successfully", ticketTypes: tickets });
+  } catch (err) {
+    console.error("Ticket sale error:", err);
+    res.status(500).json({ message: "Failed to update ticket sale." });
+  }
+};
