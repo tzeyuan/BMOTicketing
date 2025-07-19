@@ -8,6 +8,11 @@ interface TicketItem {
   price: number;
 }
 
+const extractPriceFromTicket = (label: string): number => {
+  const match = label.match(/RM\s*(\d+)/i);
+  return match ? parseFloat(match[1]) : 0;
+};
+
 const Payment = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -17,7 +22,14 @@ const Payment = () => {
 
   const event = location.state?.event || parsedLocal.event;
   const date = location.state?.date || parsedLocal.date;
-  const selectedTickets: TicketItem[] = location.state?.tickets || parsedLocal.tickets || [];
+  const ticketName = location.state?.ticketType || parsedLocal.ticketType || "";
+  const quantity = location.state?.quantity || parsedLocal.quantity || 1;
+  const price = extractPriceFromTicket(ticketName);
+
+  const selectedTickets: TicketItem[] = ticketName
+    ? [{ name: ticketName, quantity, price }]
+    : [];
+
   const userId = localStorage.getItem("userId");
 
   const [cardNumber, setCardNumber] = useState("");
@@ -33,7 +45,7 @@ const Payment = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!userId || !event || !date || !selectedTickets.length) {
+    if (!userId || !event || !date || !ticketName) {
       alert("Missing required payment data.");
       return;
     }
@@ -42,11 +54,9 @@ const Payment = () => {
       userId,
       event,
       date,
-      ticketType: selectedTickets.map(t => ({
-        name: t.name,
-        quantity: t.quantity
-      })),
-      qrCode: "/sampleQR.png"
+      ticketType: ticketName,
+      quantity,
+      qrCode: "/sampleQR.png",
     };
 
     try {
@@ -61,7 +71,8 @@ const Payment = () => {
         localStorage.removeItem("paymentData");
         navigate("/profile");
       } else {
-        alert("Failed to save ticket.");
+        const errorData = await res.json();
+        alert("Failed to save ticket: " + (errorData.message || "Unknown error"));
       }
     } catch (err) {
       alert("Server error during ticket saving.");
