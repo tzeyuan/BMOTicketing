@@ -17,17 +17,14 @@ const SelectTicket = () => {
   const [quantity, setQuantity] = useState(1);
 
   useEffect(() => {
-    const { eventId } = location.state || {};
+    const eventData = location.state?.event;
 
-    if (!eventId) {
-      navigate("/");
-      return;
+    if (!eventData || !eventData.id) {
+    navigate("/");
+    return;
     }
 
-    fetch(`http://localhost:5000/api/events/${eventId}`)
-      .then((res) => res.json())
-      .then(setEvent)
-      .catch(() => navigate("/"));
+    setEvent(eventData);
   }, [location.state, navigate]);
 
   const handleProceed = () => {

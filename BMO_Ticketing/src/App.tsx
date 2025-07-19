@@ -17,6 +17,8 @@ import CommDiscussion from "./pages/CommDiscussion";
 import CommunityHome from "./pages/CommunityHome";
 import MerchDetails from "./pages/MerchDetails";
 import Cart from "./pages/Cart";
+import WaitingRoom from "./pages/WaitingRoom"; 
+import SelectTicket from "./pages/SelectTicket"; 
 
 //Admin Panel
 import AdminPanel from "./admin/AdminPanel";
@@ -33,6 +35,8 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/events" element={<Event />} />
                     <Route path="/ticket/:id" element={<TicketDetails />} />
+                    <Route path="/waiting-room/:id" element={<WaitingRoom />} />
+                    <Route path="/select-ticket/:id" element={<SelectTicket />} />
                     <Route path="/merchHome" element={<MerchHome />} />
                     <Route path="/community" element={<Community />} />
                     <Route path="/aboutus" element={<AboutUs />} />

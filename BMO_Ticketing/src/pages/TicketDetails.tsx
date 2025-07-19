@@ -42,7 +42,9 @@ const TicketDetails = () => {
   }, [id]);
 
   const handleBuyNow = () => {
-    navigate(`/waiting-room/${id}`);
+    navigate(`/waiting-room/${id}`, {
+      state: { event },
+    });
   };
 
   if (loading) return <div className="ticket-details"><h2>Loading event...</h2></div>;

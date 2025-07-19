@@ -1,19 +1,20 @@
 import { useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import "../css/WaitingRoom.css";
 
 const WaitingRoom = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
 
   useEffect(() => {
     // Simulate wait time (e.g., 5 seconds)
     const timer = setTimeout(() => {
-      navigate("/select-ticket", { state: location.state });
+      navigate(`/select-ticket/${id}`, { state: location.state });
     }, 5000);
 
     return () => clearTimeout(timer);
-  }, [navigate, location.state]);
+  }, [navigate, location.state, id]);
 
   return (
     <div className="waiting-room">
