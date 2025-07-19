@@ -1,7 +1,22 @@
 import { DataTypes, Model } from "sequelize";
 import sequelize from "../config/db";
 
-class Event extends Model {}
+interface TicketType {
+  name: string;
+  sold: number;
+}
+
+class Event extends Model {
+  public id!: number;
+  public title!: string;
+  public artist!: string;
+  public price!: string;
+  public venue!: string;
+  public date!: string;
+  public image!: string;
+  public description!: string;
+  public ticketTypes!: TicketType[];
+}
 
 Event.init(
   {
