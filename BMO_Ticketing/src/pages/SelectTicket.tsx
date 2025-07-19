@@ -6,7 +6,7 @@ interface Event {
   id: number;
   title: string;
   date: string;
-  ticketTypes: { type: string; sold: number }[];
+  ticketTypes: string[];
 }
 
 const SelectTicket = () => {
@@ -20,8 +20,8 @@ const SelectTicket = () => {
     const eventData = location.state?.event;
 
     if (!eventData || !eventData.id) {
-    navigate("/");
-    return;
+      navigate("/");
+      return;
     }
 
     setEvent(eventData);
@@ -56,8 +56,8 @@ const SelectTicket = () => {
           >
             <option value="">-- Choose Ticket Type --</option>
             {event.ticketTypes.map((ticket, idx) => (
-              <option key={idx} value={ticket.type}>
-                {ticket.type} ({ticket.sold} sold)
+              <option key={idx} value={ticket}>
+                {ticket}
               </option>
             ))}
           </select>
