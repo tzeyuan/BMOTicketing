@@ -29,7 +29,15 @@ const ReportSummary = () => {
 
     fetch("http://localhost:5000/api/reports/summary")
       .then((res) => res.json())
-      .then(setSummary)
+      .then(data => {
+        // Optional fallback for missing fields
+        const safeData = {
+          totalSales: data.totalSales || 0,
+          totalTickets: data.totalTickets || 0,
+          events: Array.isArray(data.events) ? data.events : [],
+        };
+        setSummary(safeData);
+      })
       .catch(() => alert("Failed to load report."));
   }, [navigate]);
 
@@ -49,7 +57,7 @@ const ReportSummary = () => {
         <tbody>
           <tr>
             <td>{summary.totalTickets}</td>
-            <td>{summary.totalSales.toFixed(2)}</td>
+            <td>{(summary.totalSales || 0).toFixed(2)}</td>
           </tr>
         </tbody>
       </table>
@@ -66,16 +74,16 @@ const ReportSummary = () => {
               </tr>
             </thead>
             <tbody>
-              {Object.entries(ev.tickets).map(([type, stats], i) => (
+              {Object.entries(ev.tickets || {}).map(([type, stats], i) => (
                 <tr key={i}>
                   <td>{type}</td>
-                  <td>{stats.sold}</td>
-                  <td>{(stats.sold * stats.price).toFixed(2)}</td>
+                  <td>{stats?.sold || 0}</td>
+                  <td>{((stats?.sold || 0) * (stats?.price || 0)).toFixed(2)}</td>
                 </tr>
               ))}
               <tr className="event-total">
                 <td colSpan={2}><strong>Total Sales</strong></td>
-                <td><strong>{ev.totalSales.toFixed(2)}</strong></td>
+                <td><strong>{(ev.totalSales || 0).toFixed(2)}</strong></td>
               </tr>
             </tbody>
           </table>
