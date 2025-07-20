@@ -15,7 +15,7 @@ const Ticket = sequelize.define("Ticket", {
     allowNull: false,
   },
   ticketType: {
-    type: DataTypes.STRING,
+    type: DataTypes.JSON,
     allowNull: false,
   },
   qrCode: {
