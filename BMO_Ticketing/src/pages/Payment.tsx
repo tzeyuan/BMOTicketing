@@ -54,8 +54,7 @@ const Payment = () => {
       userId,
       event,
       date,
-      ticketType: ticketName,
-      quantity,
+      ticketType: [{ticketName,quantity}],
       qrCode: "/sampleQR.png",
     };
 

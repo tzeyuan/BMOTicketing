@@ -124,7 +124,7 @@ const AdminPanel = () => {
       <aside className="admin-sidebar">
         <h2>Admin Panel</h2>
         <p>Manage Events and Users</p>
-        <li><Link to="/admin/reportSummary">Report Summary</Link></li>
+        <Link to="/reportSummary">Report Summary</Link>
       </aside>
 
       <main className="admin-main">
