@@ -1,45 +1,62 @@
 import { Request, Response } from "express";
 import Ticket from "../models/Ticket";
-import Event from "../models/Event"; 
+import Event from "../models/Event";
+
+// validate ticketType array
+const isValidTicketTypeArray = (data: any): data is { name: string; quantity: number }[] => {
+  return Array.isArray(data) && data.every(t => t.name && typeof t.quantity === "number");
+};
 
 export const createTicket = async (req: Request, res: Response): Promise<Response> => {
   try {
-    const { userId, event, date, ticketType, qrCode, quantity = 1 } = req.body;
+    const { userId, event, date, ticketType, qrCode } = req.body;
 
     if (!userId || !event || !date || !ticketType || !qrCode) {
       return res.status(400).json({ message: "Missing fields" });
     }
 
-    // 1. Save ticket
+    // Ensure ticketType is an array
+    if (!isValidTicketTypeArray(ticketType)) {
+      return res.status(400).json({ message: "ticketType must be an array of { name, quantity }" });
+    }
+
+    // Save ticket to DB
     const ticket = await Ticket.create({
       userId,
       event,
       date,
-      ticketType,
+      ticketType, // stored as array
       qrCode,
     });
 
-    // 2. Find event and update sold count
+    // Find matching event and update ticket sold count
     const matchedEvent = await Event.findOne({ where: { title: event, date } });
     if (matchedEvent) {
-      const updatedTickets = matchedEvent.ticketTypes.map((ticketObj: any) => {
-        if (ticketObj.name === ticketType) {
-          return { ...ticketObj, sold: (ticketObj.sold || 0) + quantity };
-        }
-        return ticketObj;
+      let updatedTickets = [...matchedEvent.ticketTypes];
+
+      ticketType.forEach((purchased: { name: string; quantity: number }) => {
+        updatedTickets = updatedTickets.map((ticketObj: any) => {
+          if (ticketObj.name === purchased.name) {
+            return {
+              ...ticketObj,
+              sold: (ticketObj.sold || 0) + purchased.quantity
+            };
+          }
+          return ticketObj;
+        });
       });
 
       matchedEvent.ticketTypes = updatedTickets;
-      await matchedEvent.save();  
+      await matchedEvent.save();
     }
 
     return res.status(201).json(ticket);
   } catch (error) {
+    console.error("Error in createTicket:", error);
     return res.status(500).json({ message: "Failed to save ticket", error });
   }
 };
 
-//get all tickets associated to user
 export const getUserTickets = async (req: Request, res: Response): Promise<Response> => {
   try {
     const { userId } = req.params;
