@@ -12,6 +12,7 @@ import userRoutes from "./routes/userRoutes";
 import threadRoutes from "./routes/threadRoutes";
 import merchRoutes from "./routes/merchRoutes";
 import chatRoutes from "./routes/chatRoutes";
+import reportRoutes from "./routes/reportRoutes";
 
 // Model imports (to register with Sequelize)
 import User from "./models/User";
@@ -69,6 +70,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/threads", threadRoutes);
 app.use("/api/merchandise", merchRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/reports", reportRoutes);
 
 // Server start
 const PORT = process.env.PORT || 5000;
