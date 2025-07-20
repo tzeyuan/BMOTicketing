@@ -15,13 +15,13 @@ interface Event {
   ticketTypes: TicketType[];
 }
 
-
 const SelectTicket = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [event, setEvent] = useState<Event | null>(null);
   const [selectedType, setSelectedType] = useState("");
   const [quantity, setQuantity] = useState(1);
+  const [maxAvailable, setMaxAvailable] = useState<number | null>(null);
 
   useEffect(() => {
     const eventData = location.state?.event;
@@ -34,14 +34,30 @@ const SelectTicket = () => {
     setEvent(eventData);
   }, [location.state, navigate]);
 
+  useEffect(() => {
+    if (!event || !selectedType) return;
+
+    const selected = event.ticketTypes.find(t => t.name === selectedType);
+    if (selected) {
+      const available = selected.limit - selected.sold;
+      setMaxAvailable(available);
+
+      // Auto-reduce quantity if selected more than available
+      if (quantity > available) {
+        setQuantity(available);
+      }
+    } else {
+      setMaxAvailable(null);
+    }
+  }, [selectedType, event]);
+
   const handleProceed = () => {
-    if (!selectedType || !event) return;
+    if (!selectedType || !event || !maxAvailable || quantity > maxAvailable) return;
 
     const paymentData = {
       event: event.title,
       date: event.date,
-      ticketType: selectedType,
-      quantity,
+      ticketType: [{ name: selectedType, quantity }],
     };
 
     localStorage.setItem("paymentData", JSON.stringify(paymentData));
@@ -63,12 +79,13 @@ const SelectTicket = () => {
           >
             <option value="">-- Choose Ticket Type --</option>
             {event.ticketTypes.map((ticket, idx) => (
-              <option 
-                key={idx} 
-                value={ticket.name} 
+              <option
+                key={idx}
+                value={ticket.name}
                 disabled={ticket.sold >= ticket.limit}
               >
-                {ticket.name} ({ticket.sold}/{ticket.limit}) {ticket.sold >= ticket.limit ? " - Sold Out" : ""}
+                {ticket.name} ({ticket.sold}/{ticket.limit})
+                {ticket.sold >= ticket.limit ? " - Sold Out" : ""}
               </option>
             ))}
           </select>
@@ -78,11 +95,21 @@ const SelectTicket = () => {
             type="number"
             value={quantity}
             min={1}
-            max={10}
+            max={maxAvailable || 10}
+            disabled={!selectedType}
             onChange={(e) => setQuantity(Number(e.target.value))}
           />
+          {maxAvailable !== null && maxAvailable <= 0 && (
+            <p className="sold-out-msg">This ticket is sold out.</p>
+          )}
+          {selectedType && quantity > (maxAvailable || 0) && (
+            <p className="error-msg">Only {maxAvailable} ticket(s) left</p>
+          )}
 
-          <button onClick={handleProceed} disabled={!selectedType}>
+          <button
+            onClick={handleProceed}
+            disabled={!selectedType || quantity > (maxAvailable || 0)}
+          >
             Proceed to Payment
           </button>
         </div>
