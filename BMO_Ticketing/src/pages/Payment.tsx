@@ -54,7 +54,10 @@ const Payment = () => {
       userId,
       event,
       date,
-      ticketType: [{ticketName,quantity}],
+      ticketType: selectedTickets.map(t => ({
+        name: t.name,
+        quantity: t.quantity
+      })),
       qrCode: "/sampleQR.png",
     };
 
