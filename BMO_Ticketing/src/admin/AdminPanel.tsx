@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent } from "react";
-import { useNavigate } from "react-router-dom"; 
+import { useNavigate, Link } from "react-router-dom"; 
 import "../css/AdminPanel.css";
 
 interface Event {
@@ -124,6 +124,7 @@ const AdminPanel = () => {
       <aside className="admin-sidebar">
         <h2>Admin Panel</h2>
         <p>Manage Events and Users</p>
+        <li><Link to="/admin/reportSummary">Report Summary</Link></li>
       </aside>
 
       <main className="admin-main">
