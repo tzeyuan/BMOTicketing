@@ -1,10 +1,15 @@
 import "../css/Profile.css";
 import { useEffect, useState } from "react";
 
+type TicketTypeItem = {
+  name: string;
+  quantity: number;
+};
+
 type Ticket = {
   event: string;
   date: string;
-  ticketType: string;
+  ticketType: TicketTypeItem[]; 
   qrCode: string;
 };
 
@@ -42,7 +47,12 @@ const Profile = () => {
             <div className="ticket-card" key={index}>
               <p><strong>Event:</strong> {ticket.event}</p>
               <p><strong>Date:</strong> {ticket.date}</p>
-              <p><strong>Type:</strong> {ticket.ticketType}</p>
+              <p><strong>Type:</strong></p>
+              <ul>
+                {ticket.ticketType.map((type, i) => (
+                  <li key={i}>{type.name} × {type.quantity}</li>
+                ))}
+              </ul>
               <img src={ticket.qrCode} alt="QR Code" className="qr-img" />
             </div>
           ))}
@@ -51,10 +61,15 @@ const Profile = () => {
 
       <div className="settings-section">
         <h3>User Settings</h3>
-        <button className="logout-btn" onClick={() => {
-          localStorage.clear();
-          window.location.href = "/login";
-        }}>Log Out</button>
+        <button
+          className="logout-btn"
+          onClick={() => {
+            localStorage.clear();
+            window.location.href = "/login";
+          }}
+        >
+          Log Out
+        </button>
       </div>
     </div>
   );
