@@ -2,6 +2,12 @@ import { useEffect, useState, ChangeEvent } from "react";
 import { useNavigate, Link } from "react-router-dom"; 
 import "../css/AdminPanel.css";
 
+interface TicketType {
+  name: string;
+  limit: number;
+  sold: number;
+}
+
 interface Event {
   id: number;
   title: string;
@@ -11,7 +17,7 @@ interface Event {
   date: string;
   image: string;
   description: string;
-  ticketTypes: string[];
+  ticketTypes: TicketType[];
 }
 
 interface User {
@@ -22,21 +28,21 @@ interface User {
 }
 
 const AdminPanel = () => {
-  const navigate = useNavigate(); //used for redirect
+  const navigate = useNavigate();
 
-  //Admin Access Control
   useEffect(() => {
     const isAdmin = JSON.parse(localStorage.getItem("isAdmin") || "false");
     if (!isAdmin) {
-      navigate("/"); // Redirect to home if not admin
+      navigate("/");
     }
   }, [navigate]);
 
   const [events, setEvents] = useState<Event[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [form, setForm] = useState<Partial<Event>>({});
-  const [ticketTypes, setTicketTypes] = useState<string[]>([]);
-  const [ticketInput, setTicketInput] = useState("");
+  const [ticketTypes, setTicketTypes] = useState<TicketType[]>([]);
+  const [ticketName, setTicketName] = useState("");
+  const [ticketLimit, setTicketLimit] = useState("");
   const [editingId, setEditingId] = useState<number | null>(null);
   const [imagePreview, setImagePreview] = useState<string>("");
 
@@ -66,9 +72,14 @@ const AdminPanel = () => {
   };
 
   const handleAddTicket = () => {
-    if (ticketInput.trim()) {
-      setTicketTypes([...ticketTypes, ticketInput.trim()]);
-      setTicketInput("");
+    if (ticketName.trim() && ticketLimit) {
+      setTicketTypes([...ticketTypes, {
+        name: ticketName.trim(),
+        limit: parseInt(ticketLimit),
+        sold: 0
+      }]);
+      setTicketName("");
+      setTicketLimit("");
     }
   };
 
@@ -100,7 +111,8 @@ const AdminPanel = () => {
   const resetForm = () => {
     setForm({});
     setTicketTypes([]);
-    setTicketInput("");
+    setTicketName("");
+    setTicketLimit("");
     setEditingId(null);
     setImagePreview("");
   };
@@ -136,7 +148,7 @@ const AdminPanel = () => {
           Price from<input name="price" placeholder="Price" value={form.price || ""} onChange={handleChange} required />
           Venue<input name="venue" placeholder="Venue" value={form.venue || ""} onChange={handleChange} required />
           Event Date<input type="date" name="date" value={form.date || ""} onChange={handleDateChange} required />
-          
+
           <label>Upload Image</label>
           <input type="file" accept="image/*" onChange={handleImageUpload} />
           {imagePreview && <img src={imagePreview} alt="Preview" className="preview-img" />}
@@ -146,15 +158,21 @@ const AdminPanel = () => {
           <div className="ticket-type-field">
             <input
               type="text"
-              placeholder="Enter Ticket Type (e.g. VIP RM 988)"
-              value={ticketInput}
-              onChange={(e) => setTicketInput(e.target.value)}
+              placeholder="Ticket Name (e.g. VIP RM988)"
+              value={ticketName}
+              onChange={(e) => setTicketName(e.target.value)}
+            />
+            <input
+              type="number"
+              placeholder="Limit"
+              value={ticketLimit}
+              onChange={(e) => setTicketLimit(e.target.value)}
             />
             <button type="button" onClick={handleAddTicket}>Add</button>
           </div>
           <ul className="ticket-type-list">
             {ticketTypes.map((t, idx) => (
-              <li key={idx}>{t}</li>
+              <li key={idx}>{t.name} (Limit: {t.limit})</li>
             ))}
           </ul>
 

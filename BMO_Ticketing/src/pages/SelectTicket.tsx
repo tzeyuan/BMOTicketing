@@ -2,12 +2,19 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../css/SelectTicket.css";
 
+interface TicketType {
+  name: string;
+  sold: number;
+  limit: number;
+}
+
 interface Event {
   id: number;
   title: string;
   date: string;
-  ticketTypes: string[];
+  ticketTypes: TicketType[];
 }
+
 
 const SelectTicket = () => {
   const navigate = useNavigate();
@@ -56,8 +63,12 @@ const SelectTicket = () => {
           >
             <option value="">-- Choose Ticket Type --</option>
             {event.ticketTypes.map((ticket, idx) => (
-              <option key={idx} value={ticket}>
-                {ticket}
+              <option 
+                key={idx} 
+                value={ticket.name} 
+                disabled={ticket.sold >= ticket.limit}
+              >
+                {ticket.name} ({ticket.sold}/{ticket.limit}) {ticket.sold >= ticket.limit ? " - Sold Out" : ""}
               </option>
             ))}
           </select>
