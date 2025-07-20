@@ -1,5 +1,4 @@
 import { Request, Response } from "express";
-import Event from "../models/Event";
 import Ticket from "../models/Ticket";
 import { Op } from "sequelize";
 
@@ -18,17 +17,14 @@ export const getReportSummary = async (req: Request, res: Response) => {
       },
     });
 
-    // Global total
     let totalSales = 0;
     let totalTickets = 0;
 
-    // Map event title+date to per-event breakdown
     const eventMap: Record<string, any> = {};
 
     for (const ticket of monthlyTickets) {
-      const { event, date, ticketType, quantity } = ticket as any;
+      const { event, date, ticketType } = ticket as any;
 
-      const ticketPrice = extractPriceFromLabel(ticketType);
       const eventKey = `${event}_${date}`;
 
       if (!eventMap[eventKey]) {
@@ -40,14 +36,20 @@ export const getReportSummary = async (req: Request, res: Response) => {
         };
       }
 
-      if (!eventMap[eventKey].tickets[ticketType]) {
-        eventMap[eventKey].tickets[ticketType] = { sold: 0, price: ticketPrice };
-      }
+      // Loop through each ticket type in the array
+      for (const entry of ticketType) {
+        const { name, quantity } = entry;
+        const price = extractPriceFromLabel(name);
 
-      eventMap[eventKey].tickets[ticketType].sold += quantity;
-      eventMap[eventKey].totalSales += quantity * ticketPrice;
-      totalSales += quantity * ticketPrice;
-      totalTickets += quantity;
+        if (!eventMap[eventKey].tickets[name]) {
+          eventMap[eventKey].tickets[name] = { sold: 0, price };
+        }
+
+        eventMap[eventKey].tickets[name].sold += quantity;
+        eventMap[eventKey].totalSales += price * quantity;
+        totalSales += price * quantity;
+        totalTickets += quantity;
+      }
     }
 
     return res.json({
@@ -60,6 +62,7 @@ export const getReportSummary = async (req: Request, res: Response) => {
   }
 };
 
+// Extracts price from strings ticket type
 const extractPriceFromLabel = (label: string): number => {
   const match = label.match(/RM\s*(\d+)/i);
   return match ? parseFloat(match[1]) : 0;
