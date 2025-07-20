@@ -22,7 +22,7 @@ import SelectTicket from "./pages/SelectTicket";
 
 //Admin Panel
 import AdminPanel from "./admin/AdminPanel";
-
+import ReportSummary from "./admin/reportSummary";
 
 function App() {
     return (
@@ -43,10 +43,11 @@ function App() {
                     <Route path="/profile" element={<Profile />} />
                     <Route path="/payment" element={<Payment />} />
                     <Route path="/community/:id" element={<CommDiscussion />} />
-                    <Route path="/communityHome" element={<CommunityHome />} />
-                    <Route path="/admin" element={<AdminPanel />} />    
+                    <Route path="/communityHome" element={<CommunityHome />} />   
                     <Route path="/merch/:id" element={<MerchDetails />} />
                     <Route path="/cart" element={<Cart />} /> 
+                    <Route path="/admin" element={<AdminPanel />} /> 
+                    <Route path="/reportSummary" element={<ReportSummary />} /> 
                 </Routes>
             </Layout>
         </Router>
