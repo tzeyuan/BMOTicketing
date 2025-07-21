@@ -131,6 +131,13 @@ const AdminPanel = () => {
     }
   };
 
+  const handleDeleteTicketType = (index: number) => {
+  const updated = [...ticketTypes];
+  updated.splice(index, 1);
+  setTicketTypes(updated);
+};
+
+
   return (
     <div className="admin-container">
       <aside className="admin-sidebar">
@@ -172,9 +179,19 @@ const AdminPanel = () => {
           </div>
           <ul className="ticket-type-list">
             {ticketTypes.map((t, idx) => (
-              <li key={idx}>{t.name} (Limit: {t.limit})</li>
+              <li key={idx}>
+                {t.name} (Limit: {t.limit})
+                <button
+                  type="button"
+                  className="delete-ticket-btn"
+                  onClick={() => handleDeleteTicketType(idx)}
+                >
+                  Delete
+                </button>
+              </li>
             ))}
           </ul>
+
 
           <button type="submit">{editingId ? "Update Event" : "Create Event"}</button>
         </form>
