@@ -8,9 +8,9 @@ interface TicketItem {
   price: number;
 }
 
-const extractPriceFromTicket = (ticketType: string | { name: string }) => {
-  const label = typeof ticketType === "string" ? ticketType : ticketType.name;
-  const match = label.match(/RM\s*(\d+)/i);
+const extractPriceFromTicket = (ticketName: string): number => {
+  if (typeof ticketName !== "string") return 0;
+  const match = ticketName.match(/RM\s*(\d+)/i);
   return match ? parseFloat(match[1]) : 0;
 };
 
@@ -23,8 +23,11 @@ const Payment = () => {
 
   const event = location.state?.event || parsedLocal.event;
   const date = location.state?.date || parsedLocal.date;
-  const ticketName = location.state?.ticketType || parsedLocal.ticketType || "";
-  const quantity = location.state?.quantity || parsedLocal.quantity || 1;
+  const ticketTypeArray = location.state?.ticketType || parsedLocal.ticketType || [];
+  const ticketType = Array.isArray(ticketTypeArray) ? ticketTypeArray[0] : null;
+
+  const ticketName = ticketType?.name || "";
+  const quantity = ticketType?.quantity || 1;
   const price = extractPriceFromTicket(ticketName);
 
   const selectedTickets: TicketItem[] = ticketName
