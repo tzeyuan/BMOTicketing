@@ -48,11 +48,14 @@ export const createTicket = async (
       return res.status(404).json({ message: "Event not found" });
     }
 
-    const updatedTickets = [...(matchedEvent.ticketTypes as EventTicketType[])];
+    // Parse ticketTypes if stored as string
+    const parsedTickets: EventTicketType[] = Array.isArray(matchedEvent.ticketTypes)
+      ? matchedEvent.ticketTypes
+      : JSON.parse(matchedEvent.ticketTypes || "[]");
 
     // Check limits
     for (const purchased of ticketType) {
-      const found = updatedTickets.find((t) => t.name === purchased.name);
+      const found = parsedTickets.find((t) => t.name === purchased.name);
 
       if (!found) {
         return res.status(400).json({
@@ -81,14 +84,15 @@ export const createTicket = async (
 
     // Update sold counts
     ticketType.forEach((purchased) => {
-      const idx = updatedTickets.findIndex((t) => t.name === purchased.name);
+      const idx = parsedTickets.findIndex((t) => t.name === purchased.name);
       if (idx !== -1) {
-        updatedTickets[idx].sold =
-          (updatedTickets[idx].sold || 0) + purchased.quantity;
+        parsedTickets[idx].sold =
+          (parsedTickets[idx].sold || 0) + purchased.quantity;
       }
     });
 
-    matchedEvent.ticketTypes = updatedTickets;
+    matchedEvent.ticketTypes = parsedTickets;
+    matchedEvent.changed("ticketTypes", true);
     await matchedEvent.save();
 
     return res.status(201).json(ticket);
