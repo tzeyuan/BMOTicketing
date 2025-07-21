@@ -8,7 +8,8 @@ interface TicketItem {
   price: number;
 }
 
-const extractPriceFromTicket = (label: string): number => {
+const extractPriceFromTicket = (ticketType: string | { name: string }) => {
+  const label = typeof ticketType === "string" ? ticketType : ticketType.name;
   const match = label.match(/RM\s*(\d+)/i);
   return match ? parseFloat(match[1]) : 0;
 };

@@ -23,26 +23,28 @@ const SelectTicket = () => {
   const [quantity, setQuantity] = useState(1);
   const [maxAvailable, setMaxAvailable] = useState<number | null>(null);
 
+  // Load event passed from previous page
   useEffect(() => {
     const eventData = location.state?.event;
-
     if (!eventData || !eventData.id) {
       navigate("/");
       return;
     }
-
     setEvent(eventData);
   }, [location.state, navigate]);
 
+  // Update maxAvailable when ticket type is selected
   useEffect(() => {
-    if (!event || !selectedType) return;
+    if (!event || !selectedType) {
+      setMaxAvailable(null);
+      return;
+    }
 
     const selected = event.ticketTypes.find(t => t.name === selectedType);
     if (selected) {
       const available = selected.limit - selected.sold;
       setMaxAvailable(available);
 
-      // Auto-reduce quantity if selected more than available
       if (quantity > available) {
         setQuantity(available);
       }
@@ -51,13 +53,14 @@ const SelectTicket = () => {
     }
   }, [selectedType, event]);
 
+  // Handle submission
   const handleProceed = () => {
-    if (!selectedType || !event || !maxAvailable || quantity > maxAvailable) return;
+    if (!selectedType || !event || maxAvailable === null || quantity > maxAvailable) return;
 
     const paymentData = {
       event: event.title,
       date: event.date,
-      ticketType: [{ name: selectedType, quantity }],
+      ticketType: [{ name: selectedType, quantity }], // Make sure this is a string for now
     };
 
     localStorage.setItem("paymentData", JSON.stringify(paymentData));
@@ -78,16 +81,18 @@ const SelectTicket = () => {
             onChange={(e) => setSelectedType(e.target.value)}
           >
             <option value="">-- Choose Ticket Type --</option>
-            {event.ticketTypes.map((ticket, idx) => (
-              <option
-                key={idx}
-                value={ticket.name}
-                disabled={ticket.sold >= ticket.limit}
-              >
-                {ticket.name} ({ticket.sold}/{ticket.limit})
-                {ticket.sold >= ticket.limit ? " - Sold Out" : ""}
-              </option>
-            ))}
+            {event.ticketTypes.map((ticket, idx) => {
+              const isSoldOut = ticket.sold >= ticket.limit;
+              return (
+                <option
+                  key={idx}
+                  value={ticket.name}
+                  disabled={isSoldOut}
+                >
+                  {ticket.name}{isSoldOut ? " - Sold Out" : ""}
+                </option>
+              );
+            })}
           </select>
 
           <label>Quantity:</label>
@@ -96,19 +101,21 @@ const SelectTicket = () => {
             value={quantity}
             min={1}
             max={maxAvailable || 10}
-            disabled={!selectedType}
+            disabled={!selectedType || (maxAvailable ?? 0) <= 0}
             onChange={(e) => setQuantity(Number(e.target.value))}
           />
+
           {maxAvailable !== null && maxAvailable <= 0 && (
             <p className="sold-out-msg">This ticket is sold out.</p>
           )}
-          {selectedType && quantity > (maxAvailable || 0) && (
+
+          {selectedType && quantity > (maxAvailable ?? 0) && (
             <p className="error-msg">Only {maxAvailable} ticket(s) left</p>
           )}
 
           <button
             onClick={handleProceed}
-            disabled={!selectedType || quantity > (maxAvailable || 0)}
+            disabled={!selectedType || quantity > (maxAvailable ?? 0) || maxAvailable === 0}
           >
             Proceed to Payment
           </button>
