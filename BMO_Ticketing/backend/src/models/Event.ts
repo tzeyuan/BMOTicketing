@@ -4,6 +4,7 @@ import sequelize from "../config/db";
 interface TicketType {
   name: string;
   sold: number;
+  limit: number;
 }
 
 class Event extends Model {
@@ -35,6 +36,9 @@ Event.init(
         const raw = this.getDataValue("ticketTypes");
         return Array.isArray(raw) ? raw : [];
       },
+      set(value: TicketType[]) {
+        this.setDataValue("ticketTypes", Array.isArray(value) ? value : []);
+      }
     },
   },
   {
