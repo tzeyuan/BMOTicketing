@@ -32,16 +32,13 @@ export const getProductById = async (req: Request, res: Response) => {
 // Create new product (admin only)
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { name, description, price, image } = req.body;
+    const { name, description, price, image, eventTitle } = req.body;
 
-    if (!name || !description || !price || !image) {
+    if (!name || !description || !price || !image || !eventTitle) {
       return res.status(400).json({ message: "All fields are required." });
     }
 
-    // Optional: Admin check (requires middleware with req.user)
-    // if (!req.user?.isAdmin) return res.status(403).json({ message: "Unauthorized" });
-
-    const newItem = await Merchandise.create({ name, description, price, image });
+    const newItem = await Merchandise.create({ name, description, price, image, eventTitle });
     res.status(201).json(newItem);
   } catch (err) {
     console.error("Create error:", err);
