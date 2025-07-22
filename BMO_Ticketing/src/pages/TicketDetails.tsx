@@ -96,7 +96,7 @@ const TicketDetails = () => {
             {event.seatingPlan ? (
               <img src={event.seatingPlan} alt="Seating Plan" className="seating-plan" />
             ) : (
-              <img src="/default_seating_plan.png" alt="Default Seating" className="seating-plan" />
+              <img src="/bukitjalil_seatingplan.png" alt="Default Seating" className="seating-plan" />
             )}
 
             <h3>Terms & Conditions</h3>
