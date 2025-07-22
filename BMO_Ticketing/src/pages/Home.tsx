@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/Home.css";
 
 interface Event {
@@ -13,6 +13,7 @@ interface Event {
 const Home = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetch("http://localhost:5000/api/events")
@@ -24,6 +25,9 @@ const Home = () => {
   const filteredEvents = events.filter((event) =>
     event.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
+  
+  //Select first 3 events
+  const upcomingEvents = events.slice(0, 3);
 
   return (
     <div className="home-container">
@@ -63,6 +67,9 @@ const Home = () => {
 
       {/* Main Content */}
       <main className="main-content">
+        <div className="banner">
+          <img src="/banner1.png" alt="Main Banner" />
+        </div>
         {/* Search Bar */}
         <div className="search-bar">
           <input
@@ -102,6 +109,14 @@ const Home = () => {
           <li>aespa SYNK: Parallel - 8:00PM</li>
           <li>Final Lap: JJ20- 6:30PM</li>
         </ul>
+        <h3 className="upcoming-title">Upcoming Events</h3>
+        <div className="upcoming-events">
+          {upcomingEvents.map((event) => (
+            <div key={event.id} className="upcoming-item" onClick={() => navigate(`/ticket/${event.id}`)}>
+              <img src={event.image} alt={event.title} />
+            </div>
+          ))}
+        </div>
       </aside>
     </div>
   );
