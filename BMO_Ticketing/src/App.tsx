@@ -6,7 +6,6 @@ import ChatbotWidget from "./pages/ChatbotWidget";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import Event from "./pages/Event";
 import TicketDetails from "./pages/TicketDetails";
 import MerchHome from "./pages/MerchHome";
 import Community from "./pages/Community";
@@ -33,7 +32,6 @@ function App() {
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
-                    <Route path="/events" element={<Event />} />
                     <Route path="/ticket/:id" element={<TicketDetails />} />
                     <Route path="/waiting-room/:id" element={<WaitingRoom />} />
                     <Route path="/select-ticket/:id" element={<SelectTicket />} />
