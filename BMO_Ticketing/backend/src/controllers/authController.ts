@@ -14,7 +14,7 @@ export const signup = async (req: Request, res: Response) => {
       username,
       email,
       password: hash,
-      isAdmin: isAdmin || false, // default to false unless explicitly set
+      isAdmin: isAdmin || false, 
     });
 
     res.status(201).json({
