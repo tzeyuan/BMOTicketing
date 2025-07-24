@@ -55,7 +55,7 @@ const Cart = () => {
     <div className="cart-container">
       <div className="cart-header">
         <h2>Your Cart</h2>
-        <a href="/merchandise" className="continue-link">Continue Shopping</a>
+        <a href="/merchHome" className="continue-link">Continue Shopping</a>
       </div>
 
       {cart.length === 0 ? (
