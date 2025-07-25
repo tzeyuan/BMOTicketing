@@ -89,7 +89,7 @@ const Payment = () => {
     <div className="payment-page">
       <div className="payment-box">
         <h2>Confirm Your Selection</h2>
-        <p>Please check your selection and click 'Confirm & Checkout'</p>
+        <p>Please check your selection and click 'Confirm Payment'</p>
 
         <div className="ticket-summary">
           {selectedTickets.map((t, index) => (
