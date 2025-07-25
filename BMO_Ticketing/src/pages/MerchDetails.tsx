@@ -42,7 +42,7 @@ const MerchDetails = () => {
       <img src={product.image} alt={product.name} />
       <div className="details-info">
         <h2>{product.name}</h2>
-        <p>{product.description}</p>
+        <p style={{ whiteSpace: "pre-line" }}>{product.description}</p>
         <p><strong>RM {product.price.toFixed(2)}</strong></p>
 
         {!addedToCart ? (
