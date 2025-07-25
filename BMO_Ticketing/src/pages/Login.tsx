@@ -29,6 +29,7 @@ const Login = () => {
         localStorage.setItem("userId", data.userId);
         localStorage.setItem("isAdmin", JSON.stringify(data.isAdmin));
         navigate("/");
+        window.location.reload();
       } else {
         setError(data.message || "Login failed.");
       }
