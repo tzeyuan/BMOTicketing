@@ -72,18 +72,23 @@ export const getCommunityById = async (req: Request, res: Response) => {
 
 
 export const leaveCommunity = async (req: Request, res: Response) => {
-  const { userId, communityId } = req.body;
-
   try {
-    const record = await JoinedCommunity.findOne({ where: { userId, communityId } });
-    if (!record) {
-      return res.status(404).json({ message: "You are not part of this community." });
+    const { userId, communityId } = req.body;
+
+    const deleted = await JoinedCommunity.destroy({
+      where: {
+        userId,
+        communityId,
+      },
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Membership not found" });
     }
 
-    await record.destroy();
-    res.status(200).json({ message: "Left the community successfully." });
+    res.status(200).json({ message: "Successfully left the community" });
   } catch (err) {
     console.error("Error leaving community:", err);
-    res.status(500).json({ message: "Failed to leave community." });
+    res.status(500).json({ message: "Failed to leave community" });
   }
 };
