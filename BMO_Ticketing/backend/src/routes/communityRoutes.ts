@@ -15,8 +15,8 @@ router.post("/", createCommunity);
 router.get("/", getCommunities);
 router.post("/join", joinCommunity);
 router.get("/joined/:userId", getJoinedCommunities);
-router.delete("/:id", deleteCommunity);
 router.delete("/leave", leaveCommunity);
+router.delete("/:id", deleteCommunity);
 router.get("/:id", getCommunityById);
 
 export default router;
