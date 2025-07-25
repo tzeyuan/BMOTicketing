@@ -104,7 +104,7 @@ const Home = () => {
 
       {/* Right Sidebar */}
       <aside className="sidebar right-sidebar">
-        <h2>May 2025</h2>
+        <h2>AUGUST 2025</h2>
         <ul>
           <li>aespa SYNK: Parallel - 8:00PM</li>
           <li>Final Lap: JJ20- 6:30PM</li>
