@@ -72,7 +72,7 @@ const CommDiscussion = () => {
 
       if (res.ok) {
         alert("You have left the group.");
-        navigate("/Community"); // or redirect to home page
+        navigate("/Community"); 
       } else {
         const err = await res.json();
         alert(err.message || "Failed to leave group");
@@ -112,6 +112,8 @@ const CommDiscussion = () => {
       setThreads([created, ...threads]);
       setTitle("");
       setNewThread("");
+
+      window.location.reload();
     } catch (err) {
       alert("Failed to post thread.");
     }
