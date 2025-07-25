@@ -22,6 +22,8 @@ const Community = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
   const userId = localStorage.getItem("userId");
+  const isAdmin = localStorage.getItem("isAdmin") === "true";
+
 
   useEffect(() => {
     // Load all communities
@@ -88,6 +90,30 @@ const Community = () => {
     }
   };
 
+  //For admin to delete community
+  const handleDeleteGroup = async (groupId: number) => {
+  const confirmDelete = window.confirm("Are you sure you want to delete this community?");
+  if (!confirmDelete) return;
+
+  try {
+    const res = await fetch(`http://localhost:5000/api/communities/${groupId}`, {
+      method: "DELETE",
+    });
+
+    if (res.ok) {
+      setGroups((prev) => prev.filter((group) => group.id !== groupId));
+      alert("Community deleted successfully.");
+    } else {
+      const errorData = await res.json();
+      alert(errorData.message || "Failed to delete community.");
+    }
+  } catch (err) {
+    console.error("Delete error:", err);
+    alert("Network error while deleting community.");
+  }
+};
+
+
   const filteredGroups = groups.filter((group: any) =>
     group.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -141,13 +167,25 @@ const Community = () => {
                   <p>{group.description}</p>
                   <small>Topic: {group.topic}</small>
                 </div>
-                {joinedGroupIds.includes(group.id) ? (
-                  <span className="joined-text">Joined</span>
-                ) : (
-                  <button className="join-btn" onClick={() => handleJoin(group.id)}>
-                    Join
-                  </button>
-                )}
+                <div className="group-actions">
+                  {joinedGroupIds.includes(group.id) ? (
+                    <span className="joined-text">Joined</span>
+                  ) : (
+                    <button className="join-btn" onClick={() => handleJoin(group.id)}>
+                      Join
+                    </button>
+                  )}
+                  
+                  {isAdmin && (
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleDeleteGroup(group.id)}
+                    >
+                      Remove
+                    </button>
+                  )}
+                </div>
+
               </div>
             ))
           ) : (<p>No groups found.</p>)}
