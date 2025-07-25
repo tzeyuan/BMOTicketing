@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../css/Community.css";
 
 interface CommunityGroup {
@@ -23,65 +23,33 @@ const CommunityHome = () => {
   const userId = localStorage.getItem("userId");
   const [joinedGroups, setJoinedGroups] = useState<CommunityGroup[]>([]);
   const [threads, setThreads] = useState<Thread[]>([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userId) {
-      // Load joined communities
       fetch(`http://localhost:5000/api/communities/joined/${userId}`)
         .then(res => res.json())
         .then(async joined => {
           const groupIds = joined.map((j: any) => j.communityId);
-          
-          // Fetch community details
           const allGroups = await fetch("http://localhost:5000/api/communities").then(res => res.json());
           const matchedGroups = allGroups.filter((g: any) => groupIds.includes(g.id));
           setJoinedGroups(matchedGroups);
 
-          // Fetch threads from all joined groups
           const allThreads: Thread[] = [];
           for (const id of groupIds) {
             const res = await fetch(`http://localhost:5000/api/threads/community/${id}`);
             const data = await res.json();
             allThreads.push(...data);
           }
+
+          // Optional: sort by newest
+          allThreads.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+
           setThreads(allThreads);
         })
         .catch(err => console.error("Failed to load community threads", err));
     }
   }, [userId]);
-
-  const handleReply = async (threadId: number, replyText: string) => {
-    if (!replyText.trim()) return;
-
-    const userId = localStorage.getItem("userId");
-    if (!userId) {
-      alert("Please log in to reply.");
-      return;
-    }
-
-    const res = await fetch("http://localhost:5000/api/threads/reply", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        threadId,
-        content: replyText,
-        userId: Number(userId), 
-      }),
-    });
-
-    if (res.ok) {
-      const newReply = await res.json();
-      setThreads((prev) =>
-        prev.map((thread) =>
-          thread.id === threadId
-            ? { ...thread, replies: [...thread.replies, newReply] }
-            : thread
-        )
-      );
-    } else {
-      alert("Failed to post reply.");
-    }
-  };
 
   return (
     <div className="community-container">
@@ -105,7 +73,13 @@ const CommunityHome = () => {
           <p>No threads available.</p>
         ) : (
           threads.map((thread) => (
-            <div key={thread.id} className="thread-box">
+            <div
+              key={thread.id}
+              className="thread-box"
+              onClick={() => navigate(`/community/${thread.communityId}`)}
+              style={{ cursor: "pointer" }}
+              title="Click to open full discussion"
+            >
               <h4>{thread.title}</h4>
               <p>{thread.content}</p>
               <small>By {thread.user?.username} | {new Date(thread.createdAt).toLocaleString()}</small>
@@ -122,34 +96,6 @@ const CommunityHome = () => {
         )}
       </main>
     </div>
-  );
-};
-
-const ReplyForm = ({
-  postId,
-  onReply,
-}: {
-  postId: number;
-  onReply: (id: number, reply: string) => void;
-}) => {
-  const [text, setText] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onReply(postId, text);
-    setText("");
-  };
-
-  return (
-    <form onSubmit={handleSubmit} className="reply-form">
-      <input
-        type="text"
-        placeholder="Write a reply..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-      <button type="submit">Reply</button>
-    </form>
   );
 };
 
