@@ -35,3 +35,21 @@ export const getJoinedCommunities = async (req: Request, res: Response) => {
   const joined = await JoinedCommunity.findAll({ where: { userId } });
   res.json(joined);
 };
+
+export const deleteCommunity = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+
+    const community = await Community.findByPk(id);
+    if (!community) {
+      return res.status(404).json({ message: "Community not found." });
+    }
+
+    await community.destroy();
+
+    return res.status(200).json({ message: "Community deleted successfully." });
+  } catch (error) {
+    console.error("Delete error:", error);
+    return res.status(500).json({ message: "Failed to delete community." });
+  }
+};
