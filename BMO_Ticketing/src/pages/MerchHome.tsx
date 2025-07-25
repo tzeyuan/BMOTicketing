@@ -8,7 +8,7 @@ interface Product {
   description: string;
   price: number;
   image: string;
-  eventTitle: string; // new: used for filtering
+  eventTitle: string; 
 }
 
 const MerchHome = () => {
@@ -128,6 +128,12 @@ const MerchHome = () => {
 
   return (
     <div className="merch-home">
+      <div className="cart-bar">
+        <button className="cart-button" onClick={() => navigate("/cart")}>
+          🛒 View Cart
+        </button>
+      </div>
+
       <h2>Merchandise</h2>
 
       <div className="filter-bar">
