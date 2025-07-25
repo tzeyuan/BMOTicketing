@@ -53,3 +53,37 @@ export const deleteCommunity = async (req: Request, res: Response) => {
     return res.status(500).json({ message: "Failed to delete community." });
   }
 };
+
+export const getCommunityById = async (req: Request, res: Response) => {
+  try {
+    const { id } = req.params;
+    const community = await Community.findByPk(id);
+
+    if (!community) {
+      return res.status(404).json({ message: "Community not found" });
+    }
+
+    res.json(community);
+  } catch (err) {
+    console.error("Error fetching community by ID:", err);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+
+export const leaveCommunity = async (req: Request, res: Response) => {
+  const { userId, communityId } = req.body;
+
+  try {
+    const record = await JoinedCommunity.findOne({ where: { userId, communityId } });
+    if (!record) {
+      return res.status(404).json({ message: "You are not part of this community." });
+    }
+
+    await record.destroy();
+    res.status(200).json({ message: "Left the community successfully." });
+  } catch (err) {
+    console.error("Error leaving community:", err);
+    res.status(500).json({ message: "Failed to leave community." });
+  }
+};
