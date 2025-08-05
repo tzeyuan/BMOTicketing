@@ -6,6 +6,7 @@
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 20px;
+  table-layout: fixed; 
 }
 
 .summary-table th, .event-table th,
@@ -13,6 +14,8 @@
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
+  width: 33.33%; 
+  word-wrap: break-word;
 }
 
 .event-report {
@@ -21,4 +24,5 @@
 
 .event-total td {
   background-color: #f0f0f0;
+  font-weight: bold;
 }

@@ -7,7 +7,6 @@
   box-sizing: border-box;
 }
 
-/* Circular button only */
 .chatbot-button-wrapper {
   position: fixed;
   bottom: 24px;
@@ -27,7 +26,7 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* The full chat box */
+
 .chatbox {
   width: 320px;
   height: 400px;
@@ -43,7 +42,6 @@
   box-sizing: border-box;
 }
 
-/* Header bar */
 .chat-header {
   background: #63bda4;
   color: white;
@@ -54,7 +52,6 @@
   align-items: center;
 }
 
-/* Scrollable message area */
 .chat-messages {
   flex: 1;
   padding: 12px;
@@ -63,13 +60,11 @@
   background-color: #f9f9f9;
 }
 
-/* Message bubble */
 .chat-message {
   margin-bottom: 10px;
   line-height: 1.4;
 }
 
-/* Input box and send button */
 .chat-input {
   display: flex;
   border-top: 1px solid #ddd;

@@ -3,7 +3,7 @@
   color: white;
   display: flex;
   align-items: center;
-  justify-content: space-between; /* Distribute logo left & right links */
+  justify-content: space-between; 
   padding: 10px 24px;
   font-family: Arial, sans-serif;
   flex-wrap: nowrap;       
